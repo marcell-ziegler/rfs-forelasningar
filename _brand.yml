@@ -1,0 +1,17 @@
+color:
+  palette:
+    au-blå: "#00205b"
+    au-gul: "#ffc600"
+  background: au-blå
+  foreground: white
+  primary: au-gul
+
+
+typography:
+  fonts:
+    - family: Exo
+      source: google
+    - family: Open Sans
+      source: google
+  base: Open Sans
+  headings: Exo

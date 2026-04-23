@@ -1,0 +1,42 @@
+/*-- scss:defaults --*/
+
+/*-- scss:rules --*/
+
+.reveal .slide h2 {
+    margin-bottom: 1.5cm;
+}
+
+.reveal .slide p {
+    margin-top: 1em;
+}
+
+.reveal .slide dl {
+    margin-top: 1em;
+}
+
+.reveal .slide .column {
+    padding-right: 1em;
+}
+
+.reveal .backgrounds {
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-position: bottom;
+}
+.column.centered p {
+    text-align: center;
+}
+
+.column.centered p:has(img) {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+}
+
+.reveal pre.sourceCode code {
+    background-color: #001132;
+}
+
+.cell-output pre code {
+    background-color: #001b52;
+}

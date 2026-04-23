@@ -1,2 +1,5 @@
 .quarto/
-forelasningar-rfs_files/
+*_files/
+/.quarto/
+**/*.quarto_ipynb
+.venv/
