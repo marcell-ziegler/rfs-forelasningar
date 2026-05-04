@@ -1,6 +1,5 @@
 .quarto/
 *_files/
 /.quarto/
-**/*.quarto_ipynb
 .venv/
-.quarto_*
+**/*.quarto_*
