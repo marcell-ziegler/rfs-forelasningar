@@ -33,10 +33,31 @@
     justify-content: center;
 }
 
-.reveal pre.sourceCode code {
-    background-color: #001132;
+div.code-copy-outer-scaffold {
+    max-height: 100%;
 }
 
-.cell-output pre code {
+.reveal .sourceCode {
+    background-color: #001132;
+    font-size: 32pt;
+    width: fit-content;
+    max-width: 100%;
+    padding-right: 1em;
+    height: fit-content;
+    max-height: 100%
+}
+
+.reveal pre.sourceCode code {
+    max-height: inherit;
+}
+
+.reveal pre.sourceCode {
+    outline: 5px white;
+}
+
+.cell-output pre, .cell-output pre code {
     background-color: #001b52;
+    font-size: 32pt;
+    width: fit-content;
+    padding-right: 1em;
 }

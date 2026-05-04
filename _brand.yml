@@ -13,5 +13,7 @@ typography:
       source: google
     - family: Open Sans
       source: google
-  base: Open Sans
+  base:
+    family: Open Sans
+    size: 42pt
   headings: Exo

@@ -1,0 +1,69 @@
+===== SOURCE (hello.cpp) =====
+#include <iostream>
+
+int main() {
+    std::cout << "Hello, World!" << std::endl;
+    return 0;
+}
+
+===== ASSEMBLY (hello.s, first 120 lines) =====
+	.file	"hello.cpp"
+	.text
+#APP
+	.globl _ZSt21ios_base_library_initv
+	.section	.rodata
+.LC0:
+	.string	"Hello, World!"
+#NO_APP
+	.text
+	.globl	main
+	.type	main, @function
+main:
+.LFB1976:
+	.cfi_startproc
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	leaq	.LC0(%rip), %rdx
+	leaq	_ZSt4cout(%rip), %rax
+	movq	%rdx, %rsi
+	movq	%rax, %rdi
+	call	_ZStlsISt11char_traitsIcEERSt13basic_ostreamIcT_ES5_PKc@PLT
+	movq	_ZSt4endlIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_@GOTPCREL(%rip), %rdx
+	movq	%rdx, %rsi
+	movq	%rax, %rdi
+	call	_ZNSolsEPFRSoS_E@PLT
+	movl	$0, %eax
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+.LFE1976:
+	.size	main, .-main
+	.ident	"GCC: (GNU) 15.2.1 20260209"
+	.section	.note.GNU-stack,"",@progbits
+
+===== OBJECT DISASSEMBLY (first 120 lines) =====
+
+hello.o:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+0000000000000000 <main>:
+   0:	55                   	push   rbp
+   1:	48 89 e5             	mov    rbp,rsp
+   4:	48 8d 15 00 00 00 00 	lea    rdx,[rip+0x0]        # b <main+0xb>
+   b:	48 8d 05 00 00 00 00 	lea    rax,[rip+0x0]        # 12 <main+0x12>
+  12:	48 89 d6             	mov    rsi,rdx
+  15:	48 89 c7             	mov    rdi,rax
+  18:	e8 00 00 00 00       	call   1d <main+0x1d>
+  1d:	48 8b 15 00 00 00 00 	mov    rdx,QWORD PTR [rip+0x0]        # 24 <main+0x24>
+  24:	48 89 d6             	mov    rsi,rdx
+  27:	48 89 c7             	mov    rdi,rax
+  2a:	e8 00 00 00 00       	call   2f <main+0x2f>
+  2f:	b8 00 00 00 00       	mov    eax,0x0
+  34:	5d                   	pop    rbp
+  35:	c3                   	ret
