@@ -4,7 +4,7 @@
 	.globl _ZSt21ios_base_library_initv
 	.section	.rodata
 .LC0:
-	.string	"Hello, World!"
+	.string	"Hello, World!\n"
 #NO_APP
 	.text
 	.globl	main
@@ -22,10 +22,6 @@ main:
 	movq	%rdx, %rsi
 	movq	%rax, %rdi
 	call	_ZStlsISt11char_traitsIcEERSt13basic_ostreamIcT_ES5_PKc@PLT
-	movq	_ZSt4endlIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_@GOTPCREL(%rip), %rdx
-	movq	%rdx, %rsi
-	movq	%rax, %rdi
-	call	_ZNSolsEPFRSoS_E@PLT
 	movl	$0, %eax
 	popq	%rbp
 	.cfi_def_cfa 7, 8

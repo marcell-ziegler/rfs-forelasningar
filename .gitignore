@@ -3,3 +3,5 @@
 /.quarto/
 .venv/
 **/*.quarto_*
+
+**/*.quarto_ipynb

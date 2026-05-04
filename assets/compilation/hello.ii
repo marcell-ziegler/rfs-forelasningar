@@ -36930,6 +36930,6 @@ namespace std __attribute__ ((__visibility__ ("default")))
 
 # 3 "hello.cpp"
 int main() {
-    std::cout << "Hello, World!" << std::endl;
+    std::cout << "Hello, World!\n";
     return 0;
 }
