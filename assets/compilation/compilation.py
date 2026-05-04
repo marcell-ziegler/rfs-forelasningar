@@ -134,4 +134,3 @@ class CompilationShowcase(Scene):
         self.play(compiler.next_phase())
 
         self.wait(1)
-        
