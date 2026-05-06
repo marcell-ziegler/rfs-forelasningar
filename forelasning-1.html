@@ -240,9 +240,9 @@ Marcell Ziegler — 2026-04-23
 \]</span></p>
 <p>Vår algoritm är då</p>
 <ol type="1">
-<li>Subtrahera <span class="math inline">\(\theta_1\)</span> från <span class="math inline">\(180^\circ\)</span>,</li>
-<li>subtrahera <span class="math inline">\(\theta_2\)</span> från resultatet, och</li>
-<li>det du har kvar är <span class="math inline">\(\theta_3\)</span>.</li>
+<li class="fragment">Subtrahera <span class="math inline">\(\theta_1\)</span> från <span class="math inline">\(180^\circ\)</span>,</li>
+<li class="fragment">subtrahera <span class="math inline">\(\theta_2\)</span> från resultatet, och</li>
+<li class="fragment">det du har kvar är <span class="math inline">\(\theta_3\)</span>.</li>
 </ol>
 </div></div>
 <aside class="notes">
@@ -284,9 +284,87 @@ Marcell Ziegler — 2026-04-23
 </section>
 <section id="kompilering" class="slide level2">
 <h2>Kompilering</h2>
+<video src="./assets/compilation/videos/CompilationShowcase.mp4" loop="" controls="" width="100%" height="75%">
+</video></section>
+<section id="kompilering-1" class="slide level2">
+<h2>Kompilering</h2>
+<ul>
+<li class="fragment"><em>Kompilera</em> betyder “sammanställa”</li>
+<li class="fragment">Vi jobbar med hela filen samtidigt</li>
+<li class="fragment">Slutresultatet kan inte enkelt göras om till källkod</li>
+<li class="fragment">Snabbt och effektivt resultat</li>
+<li class="fragment">Kan bara köras på den typ av dator som det är kompilerat för</li>
+</ul>
 </section>
 <section id="tolkning" class="slide level2">
 <h2>Tolkning</h2>
+<video src="./assets/interpretation/videos/Interpretation.mp4" loop="" autoplay="" width="100%" height="75%">
+</video></section>
+<section id="tolkning-1" class="slide level2">
+<h2>Tolkning</h2>
+<ul>
+<li class="fragment">Portabelt, koden funker överallt där det finns en tolk</li>
+<li class="fragment">Alla målmaskiner måste kunna köra tolken</li>
+<li class="fragment">Körbar kod kan distribueras i läsligt format</li>
+<li class="fragment">Ofta lägre prestanda</li>
+</ul>
+</section></section>
+<section>
+<section id="terminalen" class="title-slide slide level1 center">
+<h1>Terminalen</h1>
+
+</section>
+<section id="terminalen-1" class="slide level2">
+<h2>Terminalen</h2>
+<ul>
+<li class="fragment">Din dators kommandotolk</li>
+<li class="fragment">Ett sätt att interagera med datorer utan GUI</li>
+<li class="fragment">Här körs de flesta program för programmering</li>
+</ul>
+</section></section>
+<section id="terminal-demo" class="title-slide slide level1 center">
+<h1>Terminal-demo</h1>
+
+</section>
+
+<section>
+<section id="hur-man-skriver-och-kör-kod" class="title-slide slide level1 center">
+<h1>Hur man skriver och kör kod</h1>
+
+</section>
+<section id="hello-world" class="slide level2">
+<h2>Hello, World!</h2>
+<ol type="1">
+<li>Öppna VSCode</li>
+<li>Öppna en mapp</li>
+<li>Skriv in koden</li>
+</ol>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href=""></a><span class="bu">print</span>(<span class="st">"Hello, World!"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ol start="4" type="1">
+<li>Kör koden</li>
+</ol>
+<p>(Läs mer <a href="https://www.astronomicentrum.se/bok/hello-world">i boken</a>.)</p>
+</section></section>
+<section id="rast-15-min" class="title-slide slide level1 center">
+<h1>Rast! (15 min)</h1>
+
+</section>
+
+<section>
+<section id="variabler" class="title-slide slide level1 center">
+<h1>Variabler</h1>
+
+</section>
+<section id="vad-är-en-variabel" class="slide level2">
+<h2>Vad är en variabel?</h2>
+<ul>
+<li class="fragment">Som en låda för data med…
+<ul>
+<li class="fragment">…ett namn</li>
+<li class="fragment">…ett värde</li>
+</ul></li>
+<li class="fragment">Variabler sparas inom sitt <em>scope</em>, eller tills programmet är slut.</li>
+</ul>
 </section></section>
 <section>
 <section id="funktioner" class="title-slide slide level1 center">
@@ -297,11 +375,11 @@ Marcell Ziegler — 2026-04-23
 <h2>Funktionsbegreppet</h2>
 <p>Vad är en funktion?</p>
 <ul>
-<li>En funktion är lite som en mekanisk låda:
+<li class="fragment">En funktion är lite som en mekanisk låda:
 <ol type="1">
-<li>Något går in</li>
-<li>Det behandlas</li>
-<li>Och något kanske går ut</li>
+<li class="fragment">Något går in</li>
+<li class="fragment">Det behandlas</li>
+<li class="fragment">Och något kanske går ut</li>
 </ol></li>
 </ul>
 </section>
@@ -319,18 +397,18 @@ Marcell Ziegler — 2026-04-23
 </section>
 <section id="funktioner-som-kod" class="slide level2">
 <h2>Funktioner som kod</h2>
-<div id="af0500f6" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href=""></a><span class="kw">def</span> mattefunktion(x):</span>
-<span id="cb3-2"><a href=""></a>    <span class="cf">return</span> <span class="dv">5</span> <span class="op">*</span> x <span class="op">+</span> <span class="dv">3</span></span>
-<span id="cb3-3"><a href=""></a></span>
-<span id="cb3-4"><a href=""></a><span class="kw">def</span> andragradsfunktion(x):</span>
-<span id="cb3-5"><a href=""></a>    <span class="cf">return</span> <span class="dv">5</span> <span class="op">*</span> x<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> <span class="dv">2</span> <span class="op">*</span> x <span class="op">-</span> <span class="dv">3</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="379d688c" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href=""></a><span class="kw">def</span> mattefunktion(x):</span>
+<span id="cb4-2"><a href=""></a>    <span class="cf">return</span> <span class="dv">5</span> <span class="op">*</span> x <span class="op">+</span> <span class="dv">3</span></span>
+<span id="cb4-3"><a href=""></a></span>
+<span id="cb4-4"><a href=""></a><span class="kw">def</span> andragradsfunktion(x):</span>
+<span id="cb4-5"><a href=""></a>    <span class="cf">return</span> <span class="dv">5</span> <span class="op">*</span> x<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> <span class="dv">2</span> <span class="op">*</span> x <span class="op">-</span> <span class="dv">3</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="fragment">
 <div class="h-5">
 
 </div>
-<div id="23cbca9c" class="cell" data-execution_count="2">
+<div id="aec95040" class="cell" data-execution_count="2">
 <div class="cell-output cell-output-stdout">
 <pre><code>mattefunktion(5)
 &gt;&gt;&gt; 28
@@ -343,37 +421,37 @@ andragradsfunktion(3)
 </section>
 <section id="funktioner-med-flera-indata" class="slide level2">
 <h2>Funktioner med flera indata</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href=""></a><span class="kw">def</span> addition(a, b):</span>
-<span id="cb5-2"><a href=""></a>    <span class="cf">return</span> a <span class="op">+</span> b</span>
-<span id="cb5-3"><a href=""></a></span>
-<span id="cb5-4"><a href=""></a><span class="kw">def</span> sätt_ihop(del1, del2):</span>
-<span id="cb5-5"><a href=""></a>    <span class="cf">return</span> <span class="st">"del1: "</span> <span class="op">+</span> del1 <span class="op">+</span> <span class="st">" och del 2: "</span> <span class="op">+</span> del2</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href=""></a><span class="kw">def</span> addition(a, b):</span>
+<span id="cb6-2"><a href=""></a>    <span class="cf">return</span> a <span class="op">+</span> b</span>
+<span id="cb6-3"><a href=""></a></span>
+<span id="cb6-4"><a href=""></a><span class="kw">def</span> sätt_ihop(del1, del2):</span>
+<span id="cb6-5"><a href=""></a>    <span class="cf">return</span> <span class="st">"del1: "</span> <span class="op">+</span> del1 <span class="op">+</span> <span class="st">" och del 2: "</span> <span class="op">+</span> del2</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="variablers-synlighet" class="slide level2">
 <h2>Variablers synlighet</h2>
 <div class="columns">
 <div class="column">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-6" data-code-line-numbers="|2-5"><pre class="sourceCode numberSource python code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-6-1"><a href="#annotated-cell-6-1"></a><span class="kw">def</span> funktion(a, b):</span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-6" data-target-annotation="1" onclick="event.preventDefault();" href="">1</a><span id="annotated-cell-6-2" class="code-annotation-target"><a href="#annotated-cell-6-2"></a>    tal1 <span class="op">=</span> a <span class="op">-</span> <span class="dv">3</span></span>
-<span id="annotated-cell-6-3"><a href="#annotated-cell-6-3"></a>    tal2 <span class="op">=</span> b <span class="op">*</span> <span class="dv">3</span></span>
-<span id="annotated-cell-6-4"><a href="#annotated-cell-6-4"></a></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-6" data-target-annotation="2" onclick="event.preventDefault();" href="">2</a><span id="annotated-cell-6-5" class="code-annotation-target"><a href="#annotated-cell-6-5"></a>    <span class="cf">return</span> tal1 <span class="op">-</span> tal2</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-7" data-code-line-numbers="|2-5"><pre class="sourceCode numberSource python code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-7-1"><a href="#annotated-cell-7-1"></a><span class="kw">def</span> funktion(a, b):</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-7" data-target-annotation="1" onclick="event.preventDefault();" href="">1</a><span id="annotated-cell-7-2" class="code-annotation-target"><a href="#annotated-cell-7-2"></a>    tal1 <span class="op">=</span> a <span class="op">-</span> <span class="dv">3</span></span>
+<span id="annotated-cell-7-3"><a href="#annotated-cell-7-3"></a>    tal2 <span class="op">=</span> b <span class="op">*</span> <span class="dv">3</span></span>
+<span id="annotated-cell-7-4"><a href="#annotated-cell-7-4"></a></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-7" data-target-annotation="2" onclick="event.preventDefault();" href="">2</a><span id="annotated-cell-7-5" class="code-annotation-target"><a href="#annotated-cell-7-5"></a>    <span class="cf">return</span> tal1 <span class="op">-</span> tal2</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <dl class="code-annotation-container-grid">
-<dt data-target-cell="annotated-cell-6" data-target-annotation="1">1</dt>
+<dt data-target-cell="annotated-cell-7" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-6" data-code-lines="2" data-code-annotation="1">Start av block</span>
+<span data-code-cell="annotated-cell-7" data-code-lines="2" data-code-annotation="1">Start av block</span>
 </dd>
-<dt data-target-cell="annotated-cell-6" data-target-annotation="2">2</dt>
+<dt data-target-cell="annotated-cell-7" data-target-annotation="2">2</dt>
 <dd>
-<span data-code-cell="annotated-cell-6" data-code-lines="5" data-code-annotation="2">Slut av block</span>
+<span data-code-cell="annotated-cell-7" data-code-lines="5" data-code-annotation="2">Slut av block</span>
 </dd>
 </dl>
 </div><div class="column">
 <ul>
-<li>Variabler existerar endast inom <em>blocket</em></li>
-<li>Saker definierade för hela programmet kallas <em>globala</em></li>
-<li>Variabler i blocket tar prioritet över globala variabler</li>
-<li>Lokala variabler raderas efter att blocket tar slut</li>
+<li class="fragment">Variabler existerar endast inom <em>blocket</em></li>
+<li class="fragment">Saker definierade för hela programmet kallas <em>globala</em></li>
+<li class="fragment">Variabler i blocket tar prioritet över globala variabler</li>
+<li class="fragment">Lokala variabler raderas efter att blocket tar slut</li>
 </ul>
 </div></div>
 </section>
@@ -381,14 +459,14 @@ andragradsfunktion(3)
 <h2>Funktioner som algoritmer</h2>
 <p>En funktion kan…</p>
 <ul>
-<li>…ha ingen indata, eller ingen direkt utdata</li>
-<li>…exekvera — köra — mer än bara beräkningar</li>
+<li class="fragment">…ha ingen indata, eller ingen direkt utdata</li>
+<li class="fragment">…exekvera — köra — mer än bara beräkningar</li>
 </ul>
 <div class="fragment">
 <p>Ett exempel:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href=""></a><span class="kw">def</span> skriv_namn(namn):</span>
-<span id="cb6-2"><a href=""></a>    <span class="bu">print</span>(<span class="st">"Hej! Jag heter: "</span> <span class="op">+</span> namn)</span>
-<span id="cb6-3"><a href=""></a>    <span class="bu">print</span>(<span class="st">"Kul att träffas :)"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href=""></a><span class="kw">def</span> skriv_namn(namn):</span>
+<span id="cb7-2"><a href=""></a>    <span class="bu">print</span>(<span class="st">"Hej! Jag heter: "</span> <span class="op">+</span> namn)</span>
+<span id="cb7-3"><a href=""></a>    <span class="bu">print</span>(<span class="st">"Kul att träffas :)"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 
 </section></section>

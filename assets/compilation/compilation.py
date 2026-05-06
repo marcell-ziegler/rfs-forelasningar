@@ -107,7 +107,7 @@ class CompilationShowcase(Scene):
         self.wait(0.1)
 
         prepro = ImageMobject("./preprocessed.png")
-        prepro.set_height(7)
+        prepro.set_width(4.5)
         prepro.set_z_index(-1)
         prepro.next_to(compiler, RIGHT, buff=0.3)
         self.play(FadeInFromPoint(prepro, ORIGIN))
@@ -121,16 +121,27 @@ class CompilationShowcase(Scene):
 
         self.wait(0.1)
         compiled = ImageMobject("./compiled.png")
-        compiled.set_height(7)
-        prepro.set_z_index(-1)
+        compiled.set_width(4.5)
+        compiled.set_z_index(-1)
         compiled.next_to(compiler, RIGHT, buff=0.3)
 
         self.play(FadeInFromPoint(compiled, ORIGIN))
 
         self.wait(1)
 
-        compiled.set_z_index(-1)
         self.play(compiled.animate.next_to(compiler, LEFT, buff=0.3))
         self.play(compiler.next_phase())
 
         self.wait(1)
+        self.play(FadeOutToPoint(compiled, ORIGIN))
+        self.wait(0.1)
+
+        shell = ImageMobject("./shell.png")
+        shell.set_width(2)
+        shell.set_z_index(-1)
+        shell.next_to(compiler, RIGHT, buff=0.3)
+
+        self.play(FadeInFromPoint(shell, ORIGIN))
+        self.wait(5)
+        self.play(FadeOut(shell))
+        self.play(compiler.next_phase())

@@ -5,7 +5,7 @@ format:
     revealjs:
         width: 1920
         height: 1080
-        incremental: false
+        incremental: true
         transition: slide
         transition-speed: fast
         theme: [ default, custom.scss ]
@@ -16,9 +16,10 @@ format:
 ---
 
 ## Vad är programmering?
+::: {.nonincremental}
 - Författandet av _algortimer_,
 - och implementerandet av dessa algoritmer m.h.a. ett programmeringsspråk så att datorn kan utföra dem.
-
+:::
 ::: {.text-center}
 
 Att förstå algoritmer är mycket viktigare än att förstå programmeringsspråk!
@@ -94,9 +95,65 @@ Hälsningsalgoritmen
 
 ## Kompilering
 
+<video src="./assets/compilation/videos/CompilationShowcase.mp4" loop controls width="100%" height="75%"/>
+
+## Kompilering
+
+- _Kompilera_ betyder "sammanställa"
+- Vi jobbar med hela filen samtidigt
+- Slutresultatet kan inte enkelt göras om till källkod
+- Snabbt och effektivt resultat
+- Kan bara köras på den typ av dator som det är kompilerat för
 
 ## Tolkning
 
+
+<video src="./assets/interpretation/videos/Interpretation.mp4" loop autoplay width="100%" height="75%"/>
+
+## Tolkning
+- Portabelt, koden funker överallt där det finns en tolk
+- Alla målmaskiner måste kunna köra tolken
+- Körbar kod kan distribueras i läsligt format
+- Ofta lägre prestanda
+
+# Terminalen
+
+## Terminalen
+
+- Din dators kommandotolk
+- Ett sätt att interagera med datorer utan GUI
+- Här körs de flesta program för programmering
+
+# Terminal-demo
+
+# Hur man skriver och kör kod
+
+## Hello, World!
+
+:::: {.nonincremental}
+1. Öppna VSCode
+2. Öppna en mapp
+3. Skriv in koden
+
+```python
+print("Hello, World!")
+```
+
+4. Kör koden
+::::
+
+(Läs mer [i boken](https://www.astronomicentrum.se/bok/hello-world).)
+
+# Rast! (15 min)
+
+# Variabler
+
+## Vad är en variabel?
+
+- Som en låda för data med...
+    - ...ett namn
+    - ...ett värde
+- Variabler sparas inom sitt _scope_, eller tills programmet är slut.
 
 # Funktioner
 
