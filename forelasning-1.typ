@@ -68,6 +68,7 @@
 
   Vår algoritm blir då:
   #pause
+  #v(-10mm)
   #pseudocode-list[
     + Subtrahera $theta_1$ från $180degree$
     + Subtrahera $theta_2$ från resultatet, och
@@ -101,7 +102,7 @@
   set align(center + horizon)
   figure(
     {
-      set text(size: 16pt)
+      set text(size: 15pt)
       fletcher-diagram(
         node-stroke: au-blå,
         node-fill: au-blå.lighten(95%),
@@ -185,7 +186,7 @@
       ]),
       node(pos: (0, 0), label: move(dy: -1cm, compiler_box([Förbearbetning]))),
       node(pos: (1, 0), width: 8cm, label: [
-        #set text(size: 5.2pt)
+        #set text(size: 5.0pt)
         ```gcc_ir
         # 1 "hello.cpp"
         # 1 "<built-in>"
@@ -249,7 +250,7 @@
     mark-scale: 60%,
     (
       node(pos: (-1, 0), width: 8cm, label: [
-        #set text(size: 5.2pt)
+        #set text(size: 5.0pt)
         ```gcc_ir
         # 1 "hello.cpp"
         # 1 "<built-in>"
@@ -433,7 +434,7 @@
     close: true,
   )
   set-style(stroke: 2.5pt)
-  content((0, height), image("assets/interpretation/gear.png", height: 4cm))
+  content((0, height), image("assets/gear.png", height: 4cm))
   rect((-width, height), (width, -height), name: "r")
   content("r.center", anchor: "center", padding: 2mm, text(size: 24pt, fill: white, weight: "bold", [Tolk]))
 })
@@ -524,7 +525,7 @@
 ---
 
 #item-by-item()[
-  - Portabelt, koden funker överallt där det finns en tolk
+  - Portabelt, koden funkar överallt där det finns en tolk
   - Alla målmaskiner måste kunna köra tolken
   - Körbar kod kan distribueras i läsligt format
   - Ofta lägre prestanda
@@ -588,7 +589,9 @@
 - Datorer är binära: talen lagras i bas 2
 - Annars helt normala
 
-#align(center + horizon)[$
+#align(center + horizon)[
+  #set text(size: 20pt)
+  $
     &2^15 #h(6mm) &&2^14 #h(6mm) &&2^13 #h(6mm) &&2^12#h(6mm) &&2^11 #h(6mm) &&2^10 #h(6mm) &&2^9 #h(6mm) &&2^8 #h(12mm) &&2^7 #h(6mm) &&2^6 #h(6mm) &&2^5 #h(6mm) &&2^4 #h(6mm) &&2^3 #h(6mm) &&2^2 #h(6mm) &&2^1 #h(6mm) &&2^0\
     &1 &&0 &&0 &&1 &&0 &&1 &&0 &&1 &&1 &&0 &&0 &&0 &&1 &&1 &&0 &&1\ pause
     &2^15 +&&0 +&&0 +&&2^12 +&&0 +&&2^10 +&&0 +&&2^8 &+&2^7 +&&0 +&&0 +&&0 +&&2^3 +&&2^2 +&&0 +&&1\
@@ -678,13 +681,16 @@ Precis som i matten kan du räkna med värdena som finns i variabler
 #footnote([Mer intressant matte finns #link("https://astronomicentrum.se/bok/aritmetik/#andra-matematiska-funktioner", [i boken])!]).
 
 Du kan också ändra variablers värde efter du skapat dem:
-```python
-num = 3
-num += 2
-num -= 1
-num /= 2
-num *= 4
-```
+#{
+  set text(size: 18pt)
+  ```python
+  num = 3
+  num += 2
+  num -= 1
+  num /= 2
+  num *= 4
+  ```
+}
 Vad är värdet av `num` nu?
 
 
@@ -728,15 +734,18 @@ Datatyper konverteras genom att skriva `typ(data)`. Koden kraschar om konverteri
 
 Några exempel:
 
-```py
-int("5")     -> 5
-str(3.12)    -> "3.12"
-float("2e7") -> 2e6 = 2000000.0
-bool("True") -> True
-bool(1)      -> True
-int(False)   -> 0
-int("Hej")   -> Krasch
-```
+#{
+  set text(size: 20pt)
+  ```py
+  int("5")     -> 5
+  str(3.12)    -> "3.12"
+  float("2e7") -> 2e6 = 2000000.0
+  bool("True") -> True
+  bool(1)      -> True
+  int(False)   -> 0
+  int("Hej")   -> Krasch
+  ```
+}
 
 Detta är mest användbart för att hantera indata som kommer i  `str`-format.
 
@@ -753,7 +762,6 @@ print(student)
 print("har poäng:")
 print(points)
 ```
-
 ---
 
 Föregående exempel är osmidigt och fult, vi använder i stället f-strängar.
@@ -764,7 +772,8 @@ print(f"Eleven {student} har poäng: {points}")
 
 Värdena inom klamrar utvärderas och konverteras automatiskt till `str`.
 
-#pause
+---
+
 Vi kan också använda strängaddition:
 ```python
 print("Eleven " + student + "har poäng: " + str(points))
@@ -791,13 +800,16 @@ Viktigt att notera:
 
 Om förra `if`-satsen inte kördes, gör \_\_\_.
 
-#codly(highlighted-lines: (3, 4))
-```py
-if expr:
-    ...
-else:
-    ...
-```
+#{
+  codly(highlighted-lines: (3, 4))
+  set text(size: 20pt)
+  ```py
+  if expr:
+      ...
+  else:
+      ...
+  ```
+}
 Viktigt att notera:
 
 - Samma indenteringsgrad som sin tillhörande `if`-sats
@@ -807,13 +819,16 @@ Viktigt att notera:
 == `elif`-satsen
 Om förra `if`-satsen inte kördes, men \_\_\_ är `True`, gör \_\_\_.
 
-#codly(highlighted-lines: (3, 4))
-```py
-if expr:
-    ...
-elif expr2:
-    ...
-```
+#{
+  codly(highlighted-lines: (3, 4))
+  set text(size: 20pt)
+  ```py
+  if expr:
+      ...
+  elif expr2:
+      ...
+  ```
+}
 Viktigt att notera:
 
 - Samma indenteringsgrad som sin tillhörande `if`-sats
@@ -823,7 +838,7 @@ Viktigt att notera:
 == Kedja `if`-satser
 Man kan skapa en kedja av kontrollstrukturer:
 #{
-  set text(size: 18pt)
+  set text(size: 16pt)
   ```py
   if expr1:
       ...
@@ -892,11 +907,17 @@ is_true = True
 if is_true:
     ...
 ```
+
+---
+
 Kombinerade uttryck
 ```py
 if (a == 5 and b > 5) or (c < 5 or d >= 7):
     ...
 ```
+
+---
+
 Matematiska intervall
 ```py
 if 5 <= x < 72:

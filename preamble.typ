@@ -36,7 +36,6 @@
   }
   set table(inset: 10pt)
 
-  set text(size: 23pt, lang: "sv")
   show: simple-theme.with(
     aspect-ratio: "16-9",
     footer: footer,
@@ -58,5 +57,7 @@
       )
     }),
   )
+
+  set text(size: 22pt, lang: "sv")
   [#doc]
 }
