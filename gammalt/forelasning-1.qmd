@@ -1,0 +1,501 @@
+---
+title: "Föreläsning 1: Programmerings grunder"
+author: "Marcell Ziegler --- 2026-04-23"
+format:
+    revealjs:
+        width: 1920
+        height: 1080
+        incremental: true
+        transition: slide
+        transition-speed: fast
+        theme: [ default, custom.scss ]
+        syntax-highlighting: monokai
+        background-image: "assets/AU Mall.png"
+        mermaid:
+          theme: dark
+---
+
+## Vad är programmering?
+::: {.nonincremental}
+- Författandet av _algortimer_,
+- och implementerandet av dessa algoritmer m.h.a. ett programmeringsspråk så att datorn kan utföra dem.
+:::
+::: {.text-center}
+
+Att förstå algoritmer är mycket viktigare än att förstå programmeringsspråk!
+
+:::
+
+# Att författa algoritmer
+
+> **algoritm**, algoritmen, algoritmer (subst.)
+>
+> _instruktionsföljd för lösning av problem av (mer el. mindre) matematiskt slag_
+>
+> --- Svenska Akademiens Ordlista (2026)
+
+## Ett inledande exempel
+
+::: {.columns}
+
+::: {.column}
+
+![](./assets/triangle.svg){width=80%}
+
+:::
+
+::: {.column}
+
+$$
+\begin{align*}
+\theta_1 + \theta_2 + \theta_3 &= 180^\circ\\
+\theta_3 &= 180^\circ - \theta_1 - \theta_2
+\end{align*}
+$$
+
+Vår algoritm är då
+
+1. Subtrahera $\theta_1$ från $180^\circ$,
+2. subtrahera $\theta_2$ från resultatet, och
+3. det du har kvar är $\theta_3$.
+
+:::
+
+:::
+
+
+::: {.notes}
+
+- Vi börjar med en algoritm för att hitta tredje vinkeln i en triangel.
+- En algoritm som nämnt, är alltså ett _arbetssätt_
+
+:::
+
+## Motsvarande i kod
+
+```python
+steg1 = 180 - theta1
+steg2 = steg1 - theta2
+return steg2
+```
+
+## Motsvarande i kod
+Eller lite mer kompakt...
+```python
+return 180 - theta1 - theta2
+```
+
+## Större exempel
+
+
+![](./assets/flowchart_example.svg){width=95%}
+Hälsningsalgoritmen
+
+# Hur algoritmer blir till kod
+
+## Kompilering
+
+<video src="./assets/compilation/videos/CompilationShowcase.mp4" loop controls width="100%" height="75%"/>
+
+## Kompilering
+
+- _Kompilera_ betyder "sammanställa"
+- Vi jobbar med hela filen samtidigt
+- Slutresultatet kan inte enkelt göras om till källkod
+- Snabbt och effektivt resultat
+- Kan bara köras på den typ av dator som det är kompilerat för
+
+## Tolkning
+
+
+<video src="./assets/interpretation/videos/Interpretation.mp4" loop autoplay width="100%" height="75%"/>
+
+## Tolkning
+- Portabelt, koden funker överallt där det finns en tolk
+- Alla målmaskiner måste kunna köra tolken
+- Körbar kod kan distribueras i läsligt format
+- Ofta lägre prestanda
+
+# Terminalen
+
+## Terminalen
+
+- Din dators kommandotolk
+- Ett sätt att interagera med datorer utan GUI
+- Här körs de flesta program för programmering
+
+# Terminal-demo
+
+# Hur man skriver och kör kod
+
+## Hello, World!
+
+:::: {.nonincremental}
+1. Öppna VSCode
+2. Öppna en mapp
+3. Skriv in koden
+
+```python
+print("Hello, World!")
+```
+
+4. Kör koden
+::::
+
+(Läs mer [i boken](https://www.astronomicentrum.se/bok/hello-world).)
+
+# Rast! (15 min)
+
+# Variabler
+
+## Vad är en variabel?
+
+- Som en låda för data med...
+    - ...ett namn
+    - ...ett värde
+- Variabler sparas inom sitt _scope_, eller tills programmet är slut.
+
+## Hur du använder variabler
+::: {.nonincremental}
+- En variabel skapar du som
+:::
+```python
+variabelns_namn = ...
+```
+
+- Variabeln kan heta vad som helst
+    - Engelska namn rekommenderas
+    - Alltid `snake_case`
+- Värdet kan vara vad som helst, Python är _dynamsikt typat_
+
+## Vad kan man lägga i en variabel?
+- Heltal (`int`)
+- Decimaltal/Flyttal (`float`)
+- Booleska värden (`bool`)
+- Strängar/text (`str`)
+- Dessa kallas _primitiva_ typer
+- Du kan också skapa egna typer
+
+# Datatyper
+
+## Heltal
+- Datorer är binära: talen lagras i bas 2
+- Annars helt normala
+
+## Flyttal/decimaltal
+En separat _mantissa_ och _exponent_
+
+$$
+m \cdot 2^x
+$$
+där $m$ är mantissan och $x$ är exponenten.
+
+Notera 2:an, då vi är i bas 2. I stället för *tio*potensform har vi *två*potensform.
+
+Precisionen är (ofta) begränsad till 23 binära värdesiffror.
+
+## Notation för flyttal
+Samma som en miniräknare:
+
+`100.2`
+
+`13.281`
+
+`1e3` ($10^3$)
+
+`4219.345e-3` ($4219.345 \cdot 10^{-3}$)
+
+De skrivs alltså i bas 10, men lagras i bas 2 som flyttal.
+
+## Booleska värden
+- Också känt som sant/falskt-värden
+- Skrivs med nyckelorden `True` / `False` (OBS! Stor bokstav)
+- Lagras som en 1:a för `True`, och 0:a för `False`
+    - Det betyder dock inte att de är likvärdiga med en `int`!
+
+## Text
+Det är ofta viktigt att lagra text. Det görs i en _sträng_ (`str`).
+
+I kod skriver man dessa med citattecken för att skilja text från kod:
+```python
+"En sträng med text"
+```
+
+De är egentligen listor med karaktärer. (_grapheme clusters_)
+
+Dessa lagras som ett schiffer, 8 binära siffror för varje karaktär.
+
+## Hur datatyper interagerar
+
+- Du kan inte kombinera datatyper hur som helst.
+- Ex. är `tal1 + tal2` en giltig operation, men `text + tal` är inte det.
+    - Läs vidare [i boken](https://astronomicentrum.se/bok/att-andra-datatyp/)!
+
+# Räkna i Python
+
+## Binära operationer
+Med en _binär operator_ kan du utföra en _binär operation_. Dessa är:
+
+::: {.nonincremental}
+- Addition
+- Subtraktion
+- Division
+- Multiplikation
+- Modulus
+:::
+
+Det heter _binärt_ för att det krävs två _operander_.
+
+## Binära operatörer
+
+<table class="">
+    <tbody>
+        <tr class="">
+            <th class="">Operator</th>
+            <th class="">Namn</th>
+            <th class="">Användning</th>
+        </tr>
+        <tr class="">
+            <td class=""><code>+</code></td>
+            <td class="">Addition</td>
+            <td class=""><code>5 + 5</code></td>
+        </tr>
+        <tr class="">
+            <td class=""><code>-</code></td>
+            <td class="">Subtraktion</td>
+            <td class=""><code>3 - 4</code>
+            </td>
+        </tr>
+        <tr class="">
+            <td class=""><code>/</code></td>
+            <td class="">Division</td>
+            <td class=""><code>1.5 / 3</code></td>
+        </tr>
+        <tr class="">
+            <td class=""><code>*</code></td>
+            <td class="">Multiplikation</td>
+            <td class=""><code>7.6 * 5</code></td>
+        </tr>
+        <tr class="">
+            <td class=""><code>**</code></td>
+            <td class="">Exponentiering</td>
+            <td class=""><code>3**2</code></td>
+        </tr>
+        <tr class="">
+            <td class=""><code>//</code></td>
+            <td class="">Trunkerande division (flooring division)</td>
+            <td class=""><code>3.6 // 2</code></td>
+        </tr>
+        <tr class="">
+            <td class=""><code>%</code></td>
+            <td class="">Modulus</td>
+            <td class=""><code>6 % 2</code></td>
+        </tr>
+    </tbody>
+</table>
+
+## Att räkna med variabler
+Precis som i matten kan du räkna med värdena som finns i variabler.
+
+Du kan också ändra variablers värde efter du skapat dem:
+```python
+num = 3
+num += 2
+num -= 1
+num /= 2
+num *= 4
+```
+Vad är värdet av `num` nu?
+
+Mer intressant matte finns [i boken](https://astronomicentrum.se/bok/aritmetik/#andra-matematiska-funktioner)!
+
+# In- och utdata i program
+
+## Funktionen `print()`
+Hur man skriver ut text är lite olika i olika språk, men i Python använder ni `print(<det som skall skrivas ut>)`.
+
+Kom ihåg `print("Hello, World!")` från innan.
+
+::: {.fragment}
+Varför är `"Hello, World!"` inom citattecken?
+:::
+
+## Funktionen `input()`
+Denna funktion läser en och endast en rad från terminalen per anrop.
+
+Resultatet returneras _alltid_ som text (`str`) oavsett vad användaren skrivaren.
+
+Detta används för att få in data som kan ändras vid varje körning.
+
+# Ett exempel med `input()`
+
+# Att konvertera datatyper
+
+## Typkonvertering
+Datatyper konverteras genom att skriva `typ(data)`. Koden kraschar om konverteringen är ogiltig.
+
+Några exempel:
+
+```python
+int("5")     -> 5
+str(3.12)    -> "3.12"
+float("2e7") -> 2e6 = 2000000.0
+bool("True") -> True
+bool(1)      -> True
+int(False)   -> 0
+int("Hej")   -> Krasch
+```
+
+Detta är mest användbart för att hantera indata i `str`-form.
+
+## Att skriva ut icke-text
+Funktionen `print()` klarar alla datatyper som kan göras till text, men tänk om du vill ha en beskrivning?
+
+Med två värden: `student` & `points` kan vi t.ex. skriva
+
+```python
+print("Eleven")
+print(student)
+print("har poäng:")
+print(points)
+```
+
+## Att skriva ut icke-text
+
+Föregående exempel är osmidigt och fult, vi använder i stället f-strängar.
+
+```python
+print(f"Eleven {student} har poäng: {points}")
+```
+
+Värdena inom klamrar utvärderas och konverteras automatiskt till `str`.
+
+<div class="fragment">
+Vi kan också använda strängaddition:
+```python
+print("Eleven " + student + "har poäng: " + str(points))
+```
+Notera hur vi behövde konvertera manuellt här!
+Notera också mellanslagen som måste vara med!
+</div>
+
+# Kontrollstrukturer
+
+## `if`-satsen
+Om ___ är `True`, gör ___.
+
+```python
+if expr:
+    ...
+```
+Viktigt att notera:
+
+::: {.nonincremental}
+- Kolon efter uttrycket
+- Indetering med 4 mellanslag
+- `if`-satsen utgör ett _block_ men inte ett _scope_
+:::
+
+## `else`-satsen
+
+Om förra `if`-satsen inte kördes, gör ___.
+
+```{.python code-line-numbers="3-4"}
+if expr:
+    ...
+else:
+    ...
+```
+Viktigt att notera:
+
+::: {.nonincremental}
+- Samma indenteringsgrad som sin tillhörande `if`-sats
+- Ingen blankrad mellan koden i `if`-blocket och `else`-blocket
+- Utgör ett _block_ men inte ett _scope_
+:::
+
+## `elif`-satsen
+Om förra `if`-satsen inte kördes, men ___ är sant, gör ___.
+
+```{.python code-line-numbers="3-4"}
+if expr:
+    ...
+elif expr2:
+    ...
+```
+Viktigt att notera:
+
+::: {.nonincremental}
+- Samma indenteringsgrad som sin tillhörande `if`-sats
+- Ingen blankrad mellan koden i `if`-blocket och `elif`-blocket
+- Utgör ett _block_ men inte ett _scope_
+:::
+
+## Kedja `if`-satser
+Man kan skapa en kedja av kontrollstrukturer:
+```python
+if expr1:
+    ...
+elif expr2:
+    ...
+elif expr3:
+    ...
+else:
+    ...
+```
+
+Varje uttryck utvärderas, den första som är sann körs sen körs inga andra. Om ingen är sann körs `else`-satsen.
+
+## Kedjor med `match`-satsen
+En mer sällan använd sats är `match`-satsen. Den låter dig göra en mer kompakt kedja baserat på olika möjligheter på värdet av samma uttryck.
+
+```python
+match expr:
+    case val1:
+        ...
+    case val2:
+        ...
+```
+
+Den första gren vars värde överensstämmer med `expr` körs. Om ingen matchar, körs ingen. Endast en gren kan köras totalt. `case _:` hade matchat vad som helst.
+
+# Booleska uttryck
+Sant/Falskt-uttryck
+
+## Jämförelseoperatörer
+<table class="" style="font-size: 36pt;"><tbody><tr class=""><th class="">Operator</th><th class="">Användning</th><th class="">Beskrivning</th></tr><tr class=""><td class=""><code>==</code></td><td class=""><code>a == b</code></td><td class="">Likhet. <code>True</code> om <code>a</code> har samma värde som <code>b</code>, annars <code>false</code>.</td></tr><tr class=""><td class=""><code>!=</code></td><td class=""><code>a != b</code></td><td class="">Inte lika med. Omvänt av likhet.</td></tr><tr class=""><td class=""><code>&gt;</code></td><td class=""><code>a &gt; b</code></td><td class="">Större än. Fungerar främst för nummer av olika slag.</td></tr><tr class=""><td class=""><code>&lt;</code></td><td class=""><code>a &lt; b</code></td><td class="">Mindre än. Fungerar främst för nummer av olika slag.</td></tr><tr class=""><td class=""><code>&gt;=</code></td><td class=""><code>a &gt;= b</code></td><td class="">Större än eller lika med. Fungerar främst för nummer av olika slag.</td></tr><tr class=""><td class=""><code>&lt;=</code></td><td class=""><code>a &lt;= b</code></td><td class="">Mindre än eller lika med. Fungerar främst för nummer av olika slag.</td></tr></tbody></table>
+
+## Logiska operatörer
+<table class=""><tbody><tr class=""><th class="">Operator</th><th class="">Användning</th><th class="">Beskrivning</th></tr><tr class=""><td class=""><code>and</code></td><td class=""><code>&lt;...&gt; and &lt;...&gt;</code></td><td class="">Blir <code>True</code> om de booleska uttrycken på båda sidor är <code>True</code>. Annars är den <code>False</code>.</td></tr><tr class=""><td class=""><code>or</code></td><td class=""><code>&lt;...&gt; or &lt;...&gt;</code></td><td class="">Blir <code>True</code> om höger <em>eller</em> vänster sida är <code>True</code>, eller om båda är <code>True</code>. Blir false om både höger och vänster är <code>False</code></td></tr><tr class=""><td class=""><code>not</code></td><td class=""><code>not &lt;...&gt;</code></td><td class="">Byter sanningsvärde på det som kommer efter. <code>True</code> blir <code>False</code>, och vice versa.</td></tr></tbody></table>
+
+## Att använda booleska uttryck
+Booleska variabler
+```python
+is_true = True
+if is_true:
+    ...
+```
+Kombinerade uttryck
+```python
+if (a == 5 and b > 5) or (c < 5 or d >= 7):
+    ...
+```
+Matematiska intervall
+```python
+if 5 <= x < 72:
+    ...
+```
+
+## Speciella operatörer
+`in`/`not in` kollar om värdet till vänster finns i kollektionen till höger.
+
+`is`/`is not` kollar om ett värde till vänster har samma adress i minnet som värdet till höger.
+
+Detta används sedvanligt för att kolla likhet, eller olikhet, med `None`
+```python
+if var is None:
+    ...
+
+if var is not None:
+    ...
+```
