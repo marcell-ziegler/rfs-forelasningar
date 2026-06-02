@@ -6,3 +6,5 @@
 
 **/*.quarto_ipynb
 **/__pycache__
+
+*.pdf
