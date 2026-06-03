@@ -874,7 +874,7 @@ Den första gren vars värde överensstämmer med `expr` körs. Om ingen matchar
   set text(size: 20pt)
   table(
     columns: (auto, auto, auto),
-    align: (center + horizon, left + horizon, left),
+    align: (center + horizon, center + horizon, left),
     table.header([*Operator*], [*Användning*], [*Beskrivning*]),
     `==`, `a == b`, [  Likhet. `True` om a har samma värde som b, annars `False`. ],
     `!=`, `a != b`, [  Inte lika med. Omvänt av likhet. ],
@@ -890,7 +890,7 @@ Den första gren vars värde överensstämmer med `expr` körs. Om ingen matchar
 #{
   table(
     columns: (auto, auto, auto),
-    align: (center + horizon, left + horizon, left),
+    align: (center + horizon, center + horizon, left),
     table.header([*Operator*], [*Användning*], [*Beskrivning*]),
     `and`, `<...> and <...>`, [ Bir `True` om de booleska uttrycken på båda sidor är `True`. Annars är den `False`. ],
     `or`,

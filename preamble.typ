@@ -5,7 +5,7 @@
 #import "@preview/cetz:0.5.2"
 #import "@preview/lovelace:0.3.1": *
 #import "@preview/fletcher:0.5.8" as fletcher: diagram, edge, node
-#import fletcher.shapes: circle, diamond, rect
+#import fletcher.shapes: circle, diamond, pill, rect
 #import "@preview/zero:0.6.1": num
 
 // cetz and fletcher bindings
@@ -16,7 +16,7 @@
 
 #let au-blå = rgb("#00205b")
 
-#let template(footer: [], doc) = {
+#let template(footer: [], handout: false, doc) = {
   show figure.caption: set text(size: 12pt, fill: luma(50%))
   show link: it => text(fill: blue, underline(it))
 
@@ -34,7 +34,23 @@
       it,
     )
   }
-  set table(inset: 10pt)
+
+
+  set table(
+    inset: 10pt,
+    stroke: (x, y) => {
+      if y == 1 {
+        (top: 2pt + black)
+      } else if y > 1 {
+        (top: 1pt + black)
+      }
+
+      if x > 0 {
+        (left: 1pt + black)
+      }
+    },
+  )
+  show table.header: strong
 
   show: simple-theme.with(
     aspect-ratio: "16-9",
@@ -43,19 +59,22 @@
       primary: au-blå,
       secondary: rgb("#ffc600"),
     ),
-    config-common(preamble: {
-      codly(
-        languages: (
-          py: (name: "Python", color: blue.lighten(30%)),
-          cpp: (name: "C++", color: blue),
-          yasm: (name: "x86_64 Assembly", color: gray),
-          gcc_ir: (name: "GCC Intermeidate Representation", color: gray),
-        ),
-        zebra-fill: none,
-        fill: luma(96%),
-        stroke: none,
-      )
-    }),
+    config-common(
+      preamble: {
+        codly(
+          languages: (
+            py: (name: "Python", color: blue.lighten(30%)),
+            cpp: (name: "C++", color: blue),
+            yasm: (name: "x86_64 Assembly", color: gray),
+            gcc_ir: (name: "GCC Intermeidate Representation", color: gray),
+          ),
+          zebra-fill: none,
+          fill: luma(96%),
+          stroke: none,
+        )
+      },
+      handout: handout,
+    ),
   )
 
   set text(size: 22pt, lang: "sv")
