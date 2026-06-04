@@ -260,6 +260,36 @@ En mer avancerad funktion:
   ```
 ]
 
+== Defaults för parametrar
+#item-by-item()[
+  - En parameter skriven `param=<default>` kommer anta värdet av `<default>` om inte annat anges i anropet.
+  - Sådana parametrar kallas ibland *nyckelordsparametrar*, till skillnad från de andra *positionella parametrarna*.
+  - En nyckelordsparameter kan utelämnas om så önskas.
+    - Du kan även ange endast vissa nyckelordsparametrar
+]
+
+== Exempel på nyckelordsparametrar
+#{
+  set text(size: 14pt)
+  codly()
+  ```py
+  def print_introduction(name, age, greeting="Hej", punctuation="!"):
+      print(f"{greeting}, mitt namn är {name}, jag är {age} år gammal{punctuation}")
+
+  print_introduction("Anna", 15)                      # Hej, mitt namn är Anna, jag är 15 år gammal!
+  print_introduction("Melvin", 18, greeting="Goddag") # Goddag, mitt namn är Melvin, jag är 18 år gammal!
+  print_introduction("Bertil", 16, "Gomiddag")        # Gomiddag, mitt namn är Bertil, jag är 16 år gammal!
+  print_introduction("Clara", 17, punctuation="?")    # Hej, mitt namn är Clara, jag är 17 år gammal?
+  ```
+}
+
+== Att namnge sin funktion
+
+- Vi använder alltid `snake_case`, engelska rekommenderas.
+- Skriv i imperativ: `greet(name)`, inte `greets(name)` t.ex.
+- Anväd beskrivande, fullständiga namn:
+  - `f(x)`, `y(x)`, `foo(bar)`, `plus(a,b)`, etc. är exempel på mycket dåliga namn!
+
 = Funktionsanropet
 
 == Att anropa en funktion
@@ -391,3 +421,265 @@ Vad händer om vi sätter en variabel lika med returvärdet av en procedur?
   var = greet("Marcell")
   ```
 ]
+
+= Dokumentation
+
+== Att dokumentera vad ens kod gör
+- I första hand kan du använda kommentarer för att visa vad din kod gör:
+  - Inleds med `#`. Det är tillrådligt med mellanslag mellan `#` och kommentar.
+- Kommentera rikligt! Däremot ska ni inte kommentera överflödigt#footnote[Nedan exempel, undantaget enhetsanvisningen, skulle jag anse är överflödigt.]!
+  ```py
+  # En kommentar
+
+  velocity = 5 # m / s
+
+  # Calculate the distance as d = v*t
+  distance = velocity * 2
+  ```
+
+== Att dokumentera vad en funktion gör --- Docstrings
+
+#item-by-item()[
+  - En *docstring* är en särskild sträng, som dokumenterar en funktion.
+    - Docstrings skrivs inom tre citattecken (`"""`).
+    - Skrivs _alltid_ precis under funktionsdefinitionen, indenterad lika mycket som funktionsblocket.
+  - Skriv en för varje funtkion ni gör!
+  - Det finns två sorter:
+    - Enradiga (enkla)
+    - Flerradiga (fullständiga)
+]
+
+== Hur skriver man bra docstrings?
+En docstring...
+#item-by-item[
+  - ... skrivs alltid i imperativ och sakligt.
+  - ... innehåller alltid:
+    - En kort sammanfattning av vad funktionen gör och returnerar. Max 1-2 meningar.
+  - ... kan innehålla:
+    - En sammanfattning av funktionens parametrar.
+    - En sammanfattning av funktionens returvärden.
+    - En utförlig beskrivning av funktionens förlopp.
+]
+
+== Enradiga docstrings
+
+- Dessa används för att dokumentera enkla funktioner vars funktion är "självförklarliga".
+- Använd sparsamt!
+
+Exempel:
+#{
+  set text(size: 20pt)
+  codly(highlighted-lines: (2, 6))
+  ```py
+  def add(a, b):
+    """Add a to b, return the sum."""
+    return a + b
+
+  def greet(name):
+    """Print a greeting for name."""
+    print(f"Hej, {name}!")
+  ```
+}
+
+== Fullständiga docstrings
+#slide(composer: (auto, 1fr))[
+  Dessa dokumenterar:
+  - Parametrar
+  - Returvärden
+  - Funktionens syfte
+
+  Skriv alltid sådana om\ möjligheten finns!
+][
+  #set text(size: 12pt)
+  #codly(
+    highlighted-lines: range(2, 14),
+  )
+  ```py
+  def divide(dividend, divisor, truncate=False)
+    """
+    Divide dividend by divisor, return the truncated quotient if truncate == True else return the quotient as float.
+
+    Parameters:
+      dividend (int | float): Dividend in the division.
+      divisor (int | float): Divisor in the division.
+      truncate (bool): Wether to truncate the result. Default: False.
+
+    Returns:
+      int: Truncated quotient if truncate == True
+      float: Quotioent if truncate == False
+    """
+
+    if truncate:
+      return dividend // divisor
+    else:
+      return dividend / divisor
+  ```
+]
+
+= Rast! (15 min)
+
+= Slingor
+
+== Vad är en slinga?
+
+- Du har nog hört ordet *loop* innan, men vi säger tekniskt sett *slinga* på svenska.
+- En *slinga* är ett block som upprepas flera gånger baserat på olika kriterier.
+- En slinga utgör ett scope. Varibler definierade i slingan slutar alltså finnas efter slingan.
+  - Du kan däremot uppdatera och använda yttre variabler.
+
+== `while`-slingan
+
+#item-by-item()[
+  - Slingan upprepar kod _medan_ ett kriterium är `True`.
+  - Användbart för:
+    - Oändliga slingor
+    - Verifiering av indata
+    - Viss iteration
+]
+#pause
+Slingan tar formen:
+```py
+while expr:
+  ...
+```
+Slingang körs så länge `expr == True`. Detta utvärderas i början på varje varv.
+
+
+== Den oändliga slingan
+
+Den enklaste formen av `while` är den oändliga slingan. Den uppstår när vi låter kriteriet vara `True` alltid. Koden körs för evigt#footnote[Eller tills ett `break` nås, det kommer strax.].
+
+Den oändliga slingan ser ut såhär:
+```py
+while True:
+  ...
+```
+
+== Att bryta en slinga tidigt
+
+- Vi använder nyckelordet `break` för att bryta en slinga.
+- Detta används särskilt för oändliga slingor, men funkar i vanliga också.
+
+#codly(highlighted-lines: (7,))
+```py
+prev1 = 1
+prev2 = 1
+while True:
+  next_fib = prev1 + prev2
+  print(next_fib)
+  if next_fib >= 256:
+    break
+```
+
+Hur många Fibonaccital skriver vi ut?
+
+== Tillbakablick på algoritmer
+#slide[
+  Kan någon beskriva koden som en algoritm?
+][
+
+  ```py
+  prev1 = 1
+  prev2 = 1
+  while True:
+    next_fib = prev1 + prev2
+    print(next_fib)
+    if next_fib >= 256:
+      break
+  ```
+]
+---
+#slide[
+  Detta är algoritmen. Formatet heter *pseudokod*.
+][
+  #pseudocode-list([
+    + *låt* första talet vara 1
+    + *låt* andra talet vara 1
+    + *för evigt gör*
+      + *låt* nästa fibonaccital vara summan av de två föregående
+      + *skriv ut* talet
+      + *om* nästa tal >= 256 *gör*
+        + *bryt*
+
+  ])
+]
+
+== Att hoppa över delar av en slinga
+- Med nyckelordet `continue` kan vi hoppa till nästa varv direkt.
+#{
+  set text(size: 14pt)
+  codly(highlighted-lines: (5,))
+  ```py
+  i = 0
+  while True:
+      if i == 3:
+          i += 1
+          continue
+
+      print(f"Nu är i: {i}")
+      i += 1
+
+      if i > 5:
+          break
+
+  print("klar!")
+  ```
+}
+Vad printas ut?
+
+
+== `while`-slingor för indatavalidering
+En människa är opålitlig, därför måste vi alltid kolla att de givit oss giltig data.
+
+Ett exempel:
+```py
+number = input("Ange ett positivt heltal: ")
+
+while (not number.isdecimal()) or (int(number) <= 0):
+  number = input("Ange ett positivt heltal")
+```
+
+== `for`-slingan
+
+#item-by-item()[
+  - Denna slinga *itererar* över ett *iterabelt värde*.
+  - *Iterabla värden* är:
+    - Kollektioner
+    - *Generatorfunktioner* (ex. `range()`)
+  - För varje varv läggs nästa värde från `iterable` in i `var`.
+]
+
+#uncover(3)[
+  ```py
+  for var in iterable:
+    ...
+  ```
+]
+
+== Iteration över heltalssekvenser
+- Vi använder *generatorfunktionen* `range(start, stop=None, step=1)`.
+#pause
+- I den anger du:
+  - `start` som är heltalet som är första elementet i sekvensen.
+  - `stop` som är slutet av sekvensen. Talet `stop` inkluderas _inte_ i sekvensen.
+    #uncover(3)[
+      - Om `stop` inte anges antas `start=0` och det du faktiskt gav som `start` blir `stop`.
+    ]
+  - `step` som är differensen mellan två tal i sekvensen. Default är 0. Kan vara negativ.
+
+---
+
+Ett exempel:
+```py
+for i in range(0, 10):
+  print(i)
+```
+Vad skrivs ut?
+
+#pause
+
+Detta är ekvivalent med:
+```py
+for i in range(10):
+  print(i)
+```
