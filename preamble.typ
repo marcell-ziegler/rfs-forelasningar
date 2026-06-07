@@ -67,8 +67,7 @@
             yasm: (name: "x86_64 Assembly", color: gray),
             gcc_ir: (name: "GCC Intermeidate Representation", color: gray),
           ),
-          zebra-fill: none,
-          fill: luma(96%),
+          fill: luma(98%),
           stroke: none,
         )
       },
