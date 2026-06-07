@@ -21,9 +21,6 @@
   show link: it => text(fill: blue, underline(it))
 
   show: codly-init.with()
-  show raw: set text(
-    font: "FiraCode Nerd Font Mono",
-  )
   show raw.where(block: false): it => {
     set text(fill: purple.darken(30%))
     box(
@@ -51,6 +48,8 @@
     },
   )
   show table.header: strong
+
+  set list(marker: ([#move(scale(text(fill: au-blå, sym.star.op), 150%), dy: -.15em)], [‣], [--]))
 
   show: simple-theme.with(
     aspect-ratio: "16-9",

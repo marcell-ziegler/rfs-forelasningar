@@ -12,6 +12,13 @@
   #text(size: 18pt, datetime.today().display())
 ]
 
+
+== Struktur <touying:hidden>
+#[
+  #set text(size: 12pt)
+  #components.adaptive-columns(outline(title: none))
+]
+
 == Vad är programmering?
 
 - Författandet av _algortimer_,
@@ -628,17 +635,209 @@ De skrivs alltså i bas 10, men lagras i bas 2 som flyttal.
 
 - Också känt som sant/falskt-värden
 #pause
-- Skrivs med nyckelorden `True` / `False` (OBS! Stor bokstav)
+- Skrivs med *nyckelorden* `True` / `False` (OBS! Stor bokstav)
 #pause
 - Lagras som en 1:a för `True`, och 0:a för `False`
   - Det betyder dock inte att de är likvärdiga med en `int`!
 
 == Text
 
-- De är egentligen listor med karaktärer. (*grapheme clusters*)
-- Dessa lagras kodade, som ett schiffer, med 8 binära siffror för varje karaktär.
+- Text lagras som listor med bokstäver (*grapheme clusters*), och kallas *strängar*.
 #pause
-- De vanligaste kodningarna är `UTF-8` (Unicode) och `ASCII`.
+- En *sträng* skrivs inom citationstecken, `"någon text"`.
+  - Dett är för att urskilja det från omgivande kod.
+#pause
+- Dessa lagras kodade, som ett schiffer, med 8 binära siffror för varje karaktär.
+  - De vanligaste kodningarna är `UTF-8` (Unicode) och `ASCII`.
+
+== Att formatera strängar
+- Vi kan skriva en särskild *f-sträng* för att skjuta in variabeldata.
+  - Strängen skrivs `f""`.
+#pause
+- Inskjutna värden skrivs i `{}` och ev. formateras som ex. `{:.2f}`#footnote[Du kan läsa mer i #link("https://docs.python.org/3/library/string.html#formatspec", [Pythondokumentationen]).].
+#[
+  #set text(size: 17pt)
+  ```py
+  print(f"Eleven {name}s ålder är {age}. Hen fick {score:.2f} poäng på provet.)
+  ```
+]
+#pause
+- Det finns även specialfunktioner för att göra vissa saker#footnote[Detta är ett urval, det finns mycket, mycket fler #link("https://docs.python.org/3/library/stdtypes.html#string-methods", [i dokumentationen]).]:
+#columns(3)[
+  #set text(size: 16pt)
+  - `str.strip()`: ta bort whitespace före/efter en sträng.
+  - `str.lower()`: gör allt till endast gemener.
+  - `str.upper()`: gör allt till endast versaler.
+  - `str.replace(a, b)`: byter ut alla delsträngar `a` med `b`.
+  - `str.capitalize()`: gör första bokstav versal, annars gemen.
+  - `str.isdecimal()`: `True` om strängen är ett giltigt tal i bas 10.
+]
+
+== Kollektioner
+
+#item-by-item()[
+  - En *kollektion* är en datatyp som kan lagra flera värden under samma namn.
+  - Det finns 4 inbyggda:
+    - `list`: en ordnad lista med föränderlig längd.
+    - `tuple`: en ordnad lista med oföränderlig längd.
+    - `dict`: en nyckel-värde-uppslagsbok.
+    - `set`: en oordnad mängd med unika element.
+  - Antalet element i en kollektion erhålls alltid genom `len(...)`.
+]
+
+== Den ordnade listan: `list`
+
+- Listan skapas inom `[]`, element separeras med `,`.
+  ```py
+  my_list = [1, 2, 3]
+  ```
+#pause
+- Element kan vara av olika typ, eller vara med upprepade gånger.
+#pause
+- Du kommer åt ett givet element med *indexnotation*: `my_list[i]`
+  #codly(highlights: (
+    (line: 2, start: 7, tag: "Hej!", fill: green),
+  ))
+  ```py
+  my_list = [2, 5, "Hej!"]
+  val = my_list[2]
+  ```
+  - Index börjar från 0!
+
+== Att skjuta till, resp. ta bort element ur en lista.
+- Om du vill lägga till ett värde i en lista använder du `list.append()`.
+  ```py
+  my_list = ["Hej", "på"]
+  my_list.append("dig!")
+  ```
+#alternatives[Vad innehåller `my_list` nu?][Nu är `my_list: ["Hej", "på", "dig!"]`.]
+#pause
+- Du tar bort värdet på slutet av listan med `list.pop()`#footnote[Du kan ange ett index om du vill ta bort något som inte är sist i listan. Då skrivs `list.pop(i)`.].
+  - `list.pop()` returnerar värdet den tar bort.
+    #{
+      set text(size: 18pt)
+      ```py
+      word = my_list.pop()
+      ```
+    }
+#alternatives[Vad är värdet av `word` resp. `my_list` nu?][ Nu är `word: "dig!"` och `my_list: ["Hej", "på"]` igen.]
+== Den ordnade, "låsta" listan: `tuple`
+
+- Listan skapas inom `()`, element separeras med `,`.
+  ```py
+  my_list = (1, 2, 3)
+  ```
+#pause
+- I övrigt samma som `list`, men...
+  - ...element kan varken läggas till eller tas bort efter skapandet#footnote[Det vill säga, `tuple.append()` resp. `tuple.pop()` finns alltså inte.].
+  - ...element som redan finns, kan dock redigeras.
+
+== Att byta ut befintliga listelement
+
+- I en `tuple` och en `list` kan du modifiera värdet vid ett givet listindex.
+- Det gör du med en vanlig *variabeltillsättning* till det index du önskar.
+  ```py
+  my_list = [1, 2, 3]
+  my_list[1] = 4
+  ```
+#alternatives[Vad är värdet av hela `my_list` nu?][Värdet är `my_list: [1, 4, 3]`.]
+
+== Den oordnade, unika mängden: `set`
+
+- Mängden skapas inom `{}`, element separeras med `,`.
+```py
+fruits = {"apple", "banana", "orange"}
+```
+#pause
+- Unika element kan endast uppkomma en gång per `set`.
+  - Pythontolken ser till att detta alltid upprätthålls.
+#pause
+- Du kan...
+  - Lägga till ett element med `set.add()`.
+  - Ta bort ett element med `set.remove()`.
+  - Och "plocka ut" ett slumpmässigt element med `set.pop()`#footnote[Detta raderar också elementet från mängden.].
+
+== Mängdoperationer
+#table(
+  columns: 3,
+  table.header([Operation], [Notation], [Beskrivning]),
+  [Inklusion], [`x in s`], [`True` om `x` är i mängden `s`. Ekv. med $x in s$.],
+  [Exklusion], [`x not in s`], [Omvänt ovan. Ekv. med $x in.not s$.],
+
+  [Delmängd],
+  [`s <= other`],
+  [`True` om `s` är en delmängd av `other`. Dvs. att alla element i `s` också finns i `other`. Ekv. med $s subset.eq "other"$.],
+
+  [Äkta delmängd],
+  [`s < other`],
+  [`True` om `s` är en äkta delmängd av `other`. Dvs. att alla element i `s` också finns i `other`, men `s != 0`. Ekv. med $s subset "other"$.],
+)
+
+---
+#table(
+
+  columns: 3,
+  table.header([Operation], [Notation], [Beskrivning]),
+  [Union], [`s | other | ...`], [Utvärderas till unionen av alla mängder. Ekv. med $s union "other" union ...$.],
+  [Snitt], [`s & other & ...`], [Utvärderas till snittet mellan alla mängder. Ekv. med $s inter "other" inter ...$.],
+  [Differens],
+  [`x - s - ...`],
+  [Utvärderas till elementen i `s` som inte finns med i alla andra mängder. Ekv. med $s backslash ("other" union ...)$.],
+)
+
+== Gör mängder av listor
+- Om du vill ta bort dubletter, är det lättaste att göra om listan till en mängd.
+- Notera att du tappar ordningen då.
+```py
+my_list = [1,3,4,2,6,7,6,6,6]
+my_set = set(my_list)
+```
+#alternatives[Vad är `my_set` nu?][Den blev `my_set: {1, 2, 3, 4, 6, 7}`.]
+
+== Uppslagsboken: `dict`
+
+#item-by-item()[
+  - `dict` står för "dictionary". Motsvarande typ heter `HashMap` i många andra språk.
+  - En `dict` parar ihop ett antal *nycklar* med var sitt *värde*.
+  - Den stora fördelen över en `list` är att man kommer åt data med ett "namn" och inte ett index.
+]
+
+== Att skapa en `dict`
+
+- Du skriver också en `dict` i `{}`, men nu är varje element `nyckel: värde`.
+```py
+id_numbers = {
+  "Bertil": "20050415-4638",
+  "Jonas": "19720530-1298"
+}
+```
+I ovan exempel är *nyckeln* personens namn och varje namn mappas till ett *värde* som är personnummret.
+
+En nyckel kan, och måste ha, _ett och endast ett_ värde som hör till sig. Värdet kan dock vara en annan kollektion.
+
+== Att komma åt värden i en `dict`.
+
+- Du indexerar en `dict` likt en `list` eller `tuple`, men du använder nyckeln som index: `my_dict[key]`.
+- För att lägga till element, används `dict.update()`.
+  - Metoden tar en `dict` som skall läggas till, skjuter in nya element och skriver över dubletter.
+    #{
+      set text(size: 18pt)
+      ```py
+      id_numbers = {
+        "Bertil": "20050415-4638",
+        "Jonas": "19720530-1298"
+      }
+      id_numbers.update({"Agnes": "20060412-5489"})
+      ```
+    }
+    #alternatives[Vad har `id_numbers` för värde nu?][Värdet är #text(size: 14pt)[`id_numbers: {"Bertil": "20050415-4638", "Jonas": "19720530-1298", "Agnes": "20060412-5489"}`]]
+
+== Att radera ett värde från en `dict`
+- Du tar bort ett värde med *nyckelordet* `del`.
+Exempel:
+```py
+del id_numbers["Bertil"]
+```
 
 == Hur datatyper interagerar
 
@@ -693,6 +892,19 @@ Du kan också ändra variablers värde efter du skapat dem:
 }
 Vad är värdet av `num` nu?
 
+== Aritmetikliknande operationer på kollektioner
+- Du kan "addera" `list`#footnote()[Detta är inte alls vektoraddition för inbyggda `list` och `tuple`.]<non-vec-addition-note>, `tuple`#footnote(<non-vec-addition-note>) och `str`.
+  - Denna operaion kallas *concatenation*.
+  - Du gör såhär:
+  ```py
+  "Hej, " + "på dig!" # Detta ger "Hej, på dig!"
+  [1, 2] + [3, 4] # Detta ger [1, 2, 3, 4]
+  ```
+- Du kan också "multiplicera" dessa kollektioner för att få upprepning.
+  ```py
+  "Hej" * 4 # Ger "HejHejHejHej"
+  [2, 3] * 3 # Ger [2, 3, 2, 3, 2, 3]
+  ```
 
 = In- och utdata i program
 
