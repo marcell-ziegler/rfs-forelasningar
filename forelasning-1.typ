@@ -1,5 +1,5 @@
 #import "preamble.typ": *
-#show: template.with(footer: [Grundläggande programmering (i Python)])
+#show: template.with(footer: [Grundläggande programmering (i Python)], handout: false)
 
 #title-slide[
   = Programmering --- Föreläsning 1
@@ -1137,11 +1137,10 @@ if 5 <= x < 72:
 ```
 
 == Speciella operatörer
-`in`/`not in` kollar om värdet till vänster finns i kollektionen till höger.
+- `in`/`not in` kollar om värdet till vänster finns i kollektionen till höger.
 
-`is`/`is not` kollar om ett värde till vänster har samma adress i minnet som värdet till höger.
-
-Detta används sedvanligt för att kolla likhet, eller olikhet, med `None`
+- `is`/`is not` kollar om ett värde till vänster har samma adress i minnet som värdet till höger.
+  - Detta används sedvanligt för att kolla likhet, eller olikhet, med `None`
 ```py
 if var is None:
     ...

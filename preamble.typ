@@ -31,6 +31,11 @@
       it,
     )
   }
+  show raw.where(lang: "stdout"): it => {
+    codly(number-format: none)
+    it
+    codly(number-format: numbering.with("1"))
+  }
 
 
   set table(
@@ -66,6 +71,7 @@
             cpp: (name: "C++", color: blue),
             yasm: (name: "x86_64 Assembly", color: gray),
             gcc_ir: (name: "GCC Intermeidate Representation", color: gray),
+            stdout: (name: "stdout", color: gray),
           ),
           fill: luma(98%),
           stroke: none,

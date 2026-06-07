@@ -1,17 +1,23 @@
 #import "preamble.typ": *
 #import "@preview/lilaq:0.6.0" as lq
 #import "@preview/tiptoe:0.4.0"
-#show: template.with(footer: [Funktioner & upprepningsbar kod])
+#show: template.with(footer: [Funktioner, upprepningsbar kod och grundläggande Klasser])
 
 #title-slide[
   = Programmering --- Föreläsning 2
-  Funktioner & upprepningsbar kod
+  Funktioner, upprepningsbar kod och grundläggande Klasser
 
   #v(1cm)
 
   _Marcell Ziegler_
 
   #text(size: 18pt, datetime.today().display())
+]
+
+== Struktur <touying:hidden>
+#[
+  #set text(size: 12pt)
+  #components.adaptive-columns(outline(title: none))
 ]
 
 = Funktioner
@@ -106,14 +112,15 @@ Betrakta funktionen som en maskin som kan ta in data, kan ge ut data och gör n�
 
 #align(center, move(
   fletcher-diagram(
-    spacing: 3em,
+    spacing: (5em, 2em),
     node-inset: 15pt,
     (
       node((-1, 0), $5$, shape: pill, stroke: 1pt, fill: blue.lighten(90%)),
-      node(pos: (0, 0), label: move(compiler_box($ f(x) $), dy: -1cm)),
-      node((1, 0), $5 dot 5 + 3$, shape: rect, fill: luma(90%), stroke: 1pt),
-      node((2, 0), $27$, shape: pill, stroke: 1pt, fill: blue.lighten(90%)),
+      node(pos: (0, 0), label: move(compiler_box($ f(x) $), dy: -1cm), name: "comp", inset: 0pt, height: 4cm),
+      node((1, 0), $27$, shape: pill, stroke: 1pt, fill: blue.lighten(90%)),
     ).intersperse(edge("*-|>")),
+    node((0, 1), $5 dot 5 + 3$, shape: rect, fill: luma(90%), stroke: 1pt, name: "process"),
+    edge((0, 0), (0, 1), "*-*"),
   ),
   dy: 1.5cm,
 ))
@@ -155,7 +162,7 @@ I kod använder vi tre nya begrepp:
   pause
 
   codly(number-format: none)
-  ```
+  ```REPL
   mattefunktion(5)
   >>> 28
 
@@ -427,7 +434,7 @@ Vad händer om vi sätter en variabel lika med returvärdet av en procedur?
 == Att dokumentera vad ens kod gör
 - I första hand kan du använda kommentarer för att visa vad din kod gör:
   - Inleds med `#`. Det är tillrådligt med mellanslag mellan `#` och kommentar.
-- Kommentera rikligt! Däremot ska ni inte kommentera överflödigt#footnote[Nedan exempel, undantaget enhetsanvisningen, skulle jag anse är överflödigt.]!
+- Kommentera rikligt! Däremot ska ni inte kommentera överflödigt#footnote[Nedan exempel, undantaget enhetsanvisningen, skulle jag anse är överflödigt. Även samtliga labbfacit är överflödiga!]!
   ```py
   # En kommentar
 
@@ -683,3 +690,126 @@ Detta är ekvivalent med:
 for i in range(10):
   print(i)
 ```
+
+== Iteration över kollektioner
+
+Ett exempel:
+
+```py
+names = ["Martin", "Ida", "Rebecka", "Jonas"]
+
+for name in names:
+  print(f"Hej, {name}!")
+```
+#pause
+Ur detta printas:
+#{
+  set text(size: 18pt)
+  ```stdout
+  Hej, Martin!
+  Hej, Ida!
+  Hej, Rebecka!
+  Hej, Jonas!
+  ```
+}
+
+== Iteration över en mängd
+Ett exempel:
+
+#{
+  set text(size: 18pt)
+  ```py
+  fruits = {"banana", "apple", "grapefruit", "aubergine", "pomegranate"}
+
+  for fruit in fruits:
+      print(fruit)
+  ```
+}
+#pause
+Utskriften blir i slumpmässig ordning. Ett exempel:
+#{
+  set text(size: 12pt)
+  ```stdout
+  aubergine
+  pomegranate
+  apple
+  grapefruit
+  banana
+  ```
+}
+
+
+== Iteration över en `dict`
+#item-by-item()[
+  - I grunden itererar du över `dict`:ens nycklar.
+  - Du kan...
+    - ...explicit iterera över nycklarna med `my_dict.keys()`
+    - ...iterera över värdena med `my_dict.values()`
+    - ...iterera båda samtidigt med `my_dict.items()`
+]
+
+---
+
+#slide[
+  Några exempel:
+  #set text(size: 18pt)
+  ```py
+  film_scores = {
+    "Star Wars": 8,
+    "Star Trek": 10,
+    "Interstellar": 6
+  }
+
+  for film in film_scores:
+      print(film)
+  ```
+][
+  #set text(size: 11pt)
+  ```py
+  for film in film_scores:
+    print(film)
+  ```
+  ```stdout
+  Star Wars
+  Star Trek
+  Interstellar
+  ```
+  #pause
+  #line(length: 100%)
+  ```py
+  for score in film_scores.values():
+    print(score)
+  ```
+  ```stdout
+  8
+  10
+  6
+  ```
+  #pause
+  #line(length: 100%)
+  ```py
+  for film, score in film_scores.items():
+    print(f"Filmen {film} fick betyg {score}/10")
+  ```
+  ```stdout
+  Filmen Star Wars fick betyg 8/10
+  Filmen Star Trek fick betyg 10/10
+  Filmen Interstellar fick betyg 6/10
+  ```
+]
+
+== Upprepning av utan iterationsvariabel
+
+Ibland vill man bara kör kod flera gånger. Då gör ni såhär:
+```py
+for _ in range(4)
+  print("Hej")
+```
+```stdout
+Hej
+Hej
+Hej
+Hej
+```
+#pause
+Vi måste ha en *iterationsvariabel*, men vi låter den heta `_` för att visa att vi inte använder den.
