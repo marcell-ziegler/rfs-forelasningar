@@ -1,11 +1,11 @@
 #import "preamble.typ": *
 #import "@preview/lilaq:0.6.0" as lq
 #import "@preview/tiptoe:0.4.0"
-#show: template.with(footer: [Funktioner, upprepningsbar kod och grundläggande Klasser])
+#show: template.with(footer: [Funktioner, upprepningsbar kod och grundläggande klasser], handout: false)
 
 #title-slide[
   = Programmering --- Föreläsning 2
-  Funktioner, upprepningsbar kod och grundläggande Klasser
+  Funktioner, upprepningsbar kod och grundläggande klasser
 
   #v(1cm)
 
@@ -16,7 +16,7 @@
 
 == Struktur <touying:hidden>
 #[
-  #set text(size: 12pt)
+  #set text(size: 11pt)
   #components.adaptive-columns(outline(title: none))
 ]
 
@@ -523,7 +523,6 @@ Exempel:
   ```
 ]
 
-= Rast! (15 min)
 
 = Slingor
 
@@ -813,3 +812,630 @@ Hej
 ```
 #pause
 Vi måste ha en *iterationsvariabel*, men vi låter den heta `_` för att visa att vi inte använder den.
+
+= Rast! (15 min)
+
+= Klasser & Objekt
+
+== Vad är en klass?
+
+#item-by-item[
+  - Kort och gott: en datatyp#footnote[Tekniskt sett: en samling attribut (och därav även metoder) som hör till samma gemensamma *namespace*.].
+    - En *klass* är en datatyp som representerar något abstrakt
+      - föremål,
+      - företeelse,
+      - fenomen eller
+      - allmän "sak".
+    - Både datatyper som finns inbyggda och datatyper som du gör själv är egentligen *klasser*.
+  - Klasser förekommer rikligt i *objektorienterad programmering* (OOP).
+  - Python är ett *objektorienterat språk*; alltså finns det gott om klasser.
+]
+
+== Vad är ett objekt?
+
+- Ett *objekt*, också kallat en *instans*, av en klass är en särksild "individ" av den klassen.
+  #pause
+  - Till exempel: _Maltes_ fotboll vs. en fotboll i allmänhet.
+#pause
+
+- Klassen blir då en _kategori_ (en klass) av föremål/fenomen/etc. som du kan skapa olika individer från.
+  #pause
+  - Ett till exempel: alla heltal du har skapat är ju instanser av klassen `int`! Det vill säga: indivuduella heltal, där `int` är klassen som representerar "saken" heltal.
+
+#focus-slide[
+  I Python är _allting_ ett objekt.
+
+  Om inget annat, är de ett objekt av grundklassen `Object`.
+]
+
+== Att namnge klasser och objekt
+
+#item-by-item[
+  - Alla klasser namnges i `PascalCase`#footnote[Detta gäller inte inbyggda klasser!].
+  - Alla objekt, som kommer lagras i variabler, namnges därmed som vanligt i `snake_case`.
+  - Alla attribut och metoder namnges i `snake_case` som variabler resp. funktioner.
+]
+
+= En rymdresa med stjärnor --- varför har man klasser?
+
+== Stjärnan som variabler
+
+#slide[
+  Vi säger att en stjärna kännetecknas av dess:
+  - Spektralklass
+  - Luminositet
+  - Yttemperatur i Kelvin
+  - Diameter
+  - Massa
+  #pause
+][
+  Detta går ju med vanliga variabler:
+  #[
+    #set text(size: 18pt)
+    ```py
+    star1_spectral_klass = "A"
+    star1_luminosity = 2.7e6 # W
+    star1_surface_temp_K = 4000 # K star1_diameter = 4e8 # m
+    star1_mass = 6e6 # kg
+    ```
+  ]
+  #pause
+  Det blir dock _många_ variabler...
+]
+
+== En lite smidigare lösning
+Detta tjänas ju bättre av en `dict`:
+```py
+star1 = {
+    "spectral_class": "A",
+    "luminosity": 2.7e6 # W
+    "surface_temp_K": 4000 # K
+    "diameter": 4e8 # m
+    "mass": 6e6 # kg
+}
+```
+#pause
+Här blir det dock jobbigt att upprätthålla "standarden" efter ett tag.
+
+== Den bästa lösningen: klasser
+#slide(composer: (68%, auto))[
+  #set text(size: 16pt)
+  #alternatives[
+    #codly(highlighted-lines: (1,))
+    ```py
+    class Star:
+      def __init__(
+          self,
+          spectral_class,
+          luminosity,
+          surface_temp_K,
+          diameter,
+          mass
+      ):
+          self.spectral_class = spectral_class
+          self.luminosity = luminosity
+          self.surface_temp_K = surface_temp_K
+          self.diameter = diameter
+          self.mass = mass
+    ```
+  ][
+    #codly(
+      highlighted-lines: range(2, 15),
+    )
+    ```py
+    class Star:
+      def __init__(
+          self,
+          spectral_class,
+          luminosity,
+          surface_temp_K,
+          diameter,
+          mass
+      ):
+          self.spectral_class = spectral_class
+          self.luminosity = luminosity
+          self.surface_temp_K = surface_temp_K
+          self.diameter = diameter
+          self.mass = mass
+    ```
+  ][
+    #codly(
+      highlights: ((line: 3, start: 7, tag: "Specialparameter: förekommer alltid!", fill: blue),),
+    )
+    ```py
+    class Star:
+      def __init__(
+          self,
+          spectral_class,
+          luminosity,
+          surface_temp_K,
+          diameter,
+          mass
+      ):
+          self.spectral_class = spectral_class
+          self.luminosity = luminosity
+          self.surface_temp_K = surface_temp_K
+          self.diameter = diameter
+          self.mass = mass
+    ```
+  ][
+    #codly(
+      highlights: ((line: 3, start: 7, tag: "Specialparameter: förekommer alltid!", fill: blue),),
+      annotations: (
+        (
+          start: 3,
+          end: 8,
+          content: block(
+            width: 4em,
+            rotate(-90deg, reflow: true, align(center)[Parametrar]),
+          ),
+        ),
+      ),
+    )
+    ```py
+    class Star:
+      def __init__(
+          self,
+          spectral_class,
+          luminosity,
+          surface_temp_K,
+          diameter,
+          mass
+      ):
+          self.spectral_class = spectral_class
+          self.luminosity = luminosity
+          self.surface_temp_K = surface_temp_K
+          self.diameter = diameter
+          self.mass = mass
+    ```
+  ][
+    #codly(
+      highlights: ((line: 3, start: 7, tag: "Specialparameter: förekommer alltid!", fill: blue),),
+      annotations: (
+        (
+          start: 3,
+          end: 8,
+          content: block(
+            width: 4em,
+            rotate(-90deg, reflow: true, align(center)[Parametrar]),
+          ),
+        ),
+        (
+          start: 10,
+          end: 14,
+          content: block(
+            width: 4em,
+            rotate(-90deg, reflow: true, align(center)[Tillsättning\ av attribut]),
+          ),
+        ),
+      ),
+    )
+    ```py
+    class Star:
+      def __init__(
+          self,
+          spectral_class,
+          luminosity,
+          surface_temp_K,
+          diameter,
+          mass
+      ):
+          self.spectral_class = spectral_class
+          self.luminosity = luminosity
+          self.surface_temp_K = surface_temp_K
+          self.diameter = diameter
+          self.mass = mass
+    ```
+  ]
+][
+  #set text(size: 19pt)
+  #uncover("2-")[- Vi definierar en *konstruktor*.]
+  #uncover("3-")[
+    - *Specialparametern* `self` måste alltid vara med!
+      - Den är alltid en referens till det aktuella objektet.
+  ]
+  #uncover("4-")[- Vi definierar sedan övriga parametrar som krävs _för varje_ *objekt*.]
+  #uncover("5-")[- Sist tillsätter vi samtliga *attribut* vi vill ha.]
+]
+
+#focus-slide[
+  Attribut är inte samma sak som parametrar eller variabler!
+
+  Tillhörighet visas med punktnotation!
+]
+
+== Kort om attribut & metoder
+
+- Ett *attribut* _tillhör_ ett objekt eller en klass.
+  - Detta visas med *punktnotation*: `obj.attribute`.
+    - Här tillhör alltså `attribute` `obj`.
+#pause
+- En *metod* är en funktion som tillhör en klass eller ett objekt.
+  - Detta visas också med punktnotation: `obj.method()`.
+  #pause
+  - Olika typer av metoder tar specialparametrar (`self` eller `cls`) som måste utelämnas i anropet!
+
+== Att instansiera en klass
+
+- Att *instansiera* betyder att "skapa objekt av".
+#pause
+- Vi skapar en instans av vår stjärna genom att anropa *konstruktorn*.
+  - Detta skrivs som om vi anropar själva klassen!
+
+```py
+my-star = Star("B", 5e12, 5125, 4e9, 6.2e8)
+```
+#pause
+- Se hur vi inte angas något värde för `self`!
+  - `self` blir ju en referens till det objekt vi skapar!
+
+== Att komma åt attribut
+Vi vill kanske använda värden som vi lagrat i `my_star`. Det gör vi ex. såhär:
+#table(
+  columns: (60%, 1fr),
+  stroke: none,
+  [
+    #set text(size: 15.5pt)
+    ```py
+    star1 = Star("A", 2.7e6, 4000, 4e8, 6e6)
+
+    # Några rader printout för att kolla vad som registrerades
+    lines = [
+        "Vår stjärnas egenskaper:",
+        f"Spektralklass: {star1.spectral_class}",
+        f"Luminositet: {star1.luminosity} W",
+        f"Yttemperatur: {star1.surface_temp_K} K",
+        f"Diameter: {star1.diameter} m",
+        f"Massa: {star1.mass} kg"
+    ]
+    print("\n".join(lines))
+    ```
+  ],
+  [
+    #set text(size: 16.5pt)
+    ```stdout
+    Vår stjärnas egenskaper:
+    Spektralklass: A
+    Luminositet: 2700000.0 W
+    Yttemperatur: 4000 K
+    Diameter: 400000000.0 m
+    Massa: 6000000.0 kg
+    ```
+  ],
+)
+
+== Att redigera instansattribut
+- Vi kan ändra befintliga och skapa nya:
+#[
+  #set text(size: 13.5pt)
+  ```py
+  import math
+
+  star1.luminosity = 2.4e22 # W
+  print(f"Stjärnans luminositet är nu: {star1.luminosity} W")
+
+  # Vi tillämpar mantelytan av en sfär
+  star1.total_flux = star1.luminosity / (4 * math.pi * (star1.diameter / 2)**2) # W / m^2
+  print(f"Totalt radiativt flöde genom ytan är {star1.total_flux:.2f} W / m^2")
+  ```
+  ```stdout
+  Stjärnans luminositet är nu: 2.4e+22 W
+  Totalt radiativt flöde genom ytan är 47746.48 W / m^2
+  ```
+]
+#pause
+- Eller radera befintliga:
+#[
+  #set text(size: 14pt)
+  ```py
+  del star1.total_flux
+  ```
+]
+
+== Metoder
+
+- En *metod* är en funktion som tillhör en klass eller en instans av en klass.
+  - Exempel på metoder ni redan sett är `list.pop()`, `str.lower()` m.m.
+  - Dessa metoder tillhör sina respektive klasser `list` och `str`.
+#pause
+- Vanliga användningar för metoder:
+  #pause
+  - Beräkningar som berör objektets attribut.
+  #pause
+  - Utskrifter för olika displayformat av objektets data.
+  #pause
+  - Olika "handlingar" (procedurer) som objektet kan utföra.
+    - Detta är relevant för abstrakta klasser som representerar olika komponenter i ett mjukvarupaket, ex. `HTTPServer` eller dylikt.
+
+== Att skapa våra egna metoder
+
+#slide(composer: (60%, auto))[
+  #set text(size: 16pt)
+  #codly(highlights: (
+    (
+      line: 2,
+      start: 3,
+      tag: "Här utelämnar vi konstruktorn.",
+      fill: gray,
+    ),
+  ))
+  ```py
+  class Star:
+    ...
+
+    def print_summary(self):
+        lines = [
+            "Vår stjärnas egenskaper:",
+            f"Spektralklass: {self.spectral_class}",
+            f"Luminositet: {self.luminosity} W",
+            f"Yttemperatur: {self.surface_temp_K} K",
+            f"Diameter: {self.diameter} m",
+            f"Massa: {self.mass} kg"
+        ]
+        print("\n".join(lines))
+  ```
+][
+  - Denna metod skrivs:
+    #pause
+    - Indenterat like mycket som klassen.
+    #pause
+    - Med specialparametern `self`.
+      - Vad var det den gjorde?
+  #pause
+  - Eftersom metoden behandlar attribut på instansen, heter det en *instansmetod*.
+]
+
+---
+
+=== Hur man anropar instansmetoder
+
+#[
+  #set text(size: 17.3pt)
+  ```py
+  my_star = Star("B", 3e12, 3125, 5e6, 6e12)
+
+  # Notera hur specialparametern self INTE behöver anges.
+  # Den blir automatiskt en referens till objektet
+  # metoden anropas på, dvs. my_star.
+  my_star.print_summary()
+  ```
+  ```stdout
+  Vår stjärnas egenskaper:
+  Spektralklass: B
+  Luminositet: 3000000000000.0 W
+  Yttemperatur: 3125 K
+  Diameter: 5000000.0 m
+  Massa: 6000000000000.0 kg
+  ```
+]
+
+== Instansmetoder som utför beräkningar
+#slide(composer: (60%, auto))[
+  #set text(size: 16pt)
+  ```py
+  import math # Superviktigt för att få pi
+
+  class Star:
+      ...
+
+      def total_flux(self):
+          """Return total flux in W / m^2 for the Star."""
+          r = self.diameter / 2
+          return self.luminosity / (4 * math.pi * r**2)
+  ```
+  #uncover("2-")[
+    Vi anropar:
+    ```py
+    my_star = Star("O", 3e14, 3005, 5e5, 6e7)
+    print(my_star.total_flux())
+    ```
+  ]
+][
+  - En stjänars luminositet ges som
+    $ Phi = L / (4 pi r^2). $
+  - Till vänster finns en metod som räknar ut denna.
+  #v(3em)
+  #uncover("2-")[
+    #set text(size: 16pt)
+    ```stdout
+    381.97186342054886
+    ```
+  ]
+]
+
+== Att göra en klass `print()`-kompatibel
+
+#slide(composer: (60%, auto))[
+  #set text(size: 16pt)
+  ```py
+  class Star:
+    ...
+
+    def __str__(self):
+        lines = [
+            "Vår stjärnas egenskaper:",
+            f"Spektralklass: {self.spectral_class}",
+            f"Luminositet: {self.luminosity} W",
+            f"Yttemperatur: {self.surface_temp_K} K",
+            f"Diameter: {self.diameter} m",
+            f"Massa: {self.mass} kg"
+        ]
+        return "\n".join(lines)
+  ```
+][
+  - Vi definierar den speciella metoden `__str__()`.
+    - Dett berättar för tolken att "det är såhär jag ser ut som text".
+  #pause
+  - När man anropar print på ett objekt, skrivs den sträng som returneras av `obj.__str__()` ut.
+]
+
+---
+
+=== Printa en egen klass
+
+#[
+  #set text(size: 17.3pt)
+  ```py
+  my_star = Star("B", 3e12, 3125, 5e6, 6e12)
+
+  print(my_star)
+  ```
+  ```stdout
+  Vår stjärnas egenskaper:
+  Spektralklass: B
+  Luminositet: 3000000000000.0 W
+  Yttemperatur: 3125 K
+  Diameter: 5000000.0 m
+  Massa: 6000000000000.0 kg
+  ```
+]
+
+== Klassattribut
+#slide(composer: (55%, auto))[
+  #codly(highlighted-lines: range(2, 5))
+  ```py
+  class Star:
+    SOLAR_MASS = 1.989e30 # kg
+    SOLAR_LUMINOSITY = 3.828e26 # W
+    SOLAR_DIAMETER = 1.3927e9 # m
+
+    def __init__(self, ...)
+      ...
+
+    ...
+  ```
+][
+  - Vi kan definiera attribut på klassen som helhet.
+    - Detta kallas *klassattribut*.
+  #pause
+  - Klassattribut är tillgängliga på både klassen och alla instanser.
+  #pause
+  - Användbart för (ofta konstanta) gemensamma attribut som gäller alla objekt av klassen
+]
+
+== Klassmetoder
+
+#slide(composer: (55%, auto))[
+  #set text(size: 14pt)
+  #codly(highlights: ((line: 6, start: 3, tag: "Här utelämnas __init__() m.m.", fill: gray),))
+  ```py
+  class Star:
+    SOLAR_MASS = 1.989e30 # kg
+    SOLAR_LUMINOSITY = 3.828e26 # W
+    SOLAR_DIAMETER = 1.3927e9 # m
+
+    ...
+
+    @classmethod
+    def from_solar_units(cls, spectral_class, luminosity, surface_temp_K, diameter, mass)
+        mass *= cls.SOLAR_MASS
+        luminosity *= cls.SOLAR_LUMINOSITY
+        diameter *= cls.SOLAR_DIAMETER
+
+        return Star(spectral_class, luminosity, surface_temp_K, diameter, mass)
+  ```
+][
+  #set text(size: 20pt)
+  - En *klassmetod* tar `cls` som specialparameter.
+    - Detta är analogt med `self`, fast det är en referens till _klassen_, inte objektet.
+  #pause
+  - Klassmetoder måste *dekoreras* med *dekoratorn* `@classmethod`.
+  #pause
+  - Notera att det nu är _klassens_ attribut vi kan använda i metoden.
+  #pause
+  - Vi returnerar returvärdet av konstruktorn, vilket ju är ett nytt objekt med rätt värden!
+]
+
+---
+
+=== Exempel på använding
+#{
+  set text(size: 18pt)
+  ```py
+  # En Star som har samma egenskaper som solen
+  our_sun = Star.from_solar_units("F", 1, 5772, 1, 1)
+  print(our_sun)
+  ```
+  ```stdout
+  Vår stjärnas egenskaper:
+  Spektralklass: F
+  Luminositet: 3.828e+26 W
+  Yttemperatur: 5772 K
+  Diameter: 1392700000.0 m
+  Massa: 1.989e+30 kg
+  ```
+}
+
+== Ett exempel på en bra docstring
+#[
+  #set text(size: 12pt)
+  #codly(highlights: (
+    (line: 17, start: 3, tag: "Här utelämnar vi beräkningar.", fill: gray),
+  ))
+  ```py
+  @classmethod
+  def from_solar_units(cls, spectral_class, luminosity, surface_temp_K, diameter, mass):
+    """
+    Instantiate a Star based on solar units.
+
+    Parameters:
+        spectral_class (str): Spectral class of star, e.g. "O","B","A","F","G","K","M".
+        luminosity (float): Luminosity in solar luminosity
+        surface_temp_K (float): Surface temp in Kelvin
+        diameter (float): Diameter in solar diameters
+        mass (float): Mass in solar masses
+
+    Returns:
+        Star: a new Star object with the provided values converted to SI units.
+    """
+
+    ...
+
+    return Star(spectral_class, luminosity, surface_temp_K, diameter, mass)
+  ```
+]
+
+== Statiska metoder
+
+#slide(composer: (50%, auto))[
+  #set text(size: 14pt)
+  #codly()
+  ```py
+  class Star:
+
+    ...
+
+    @staticmethod
+    def is_valid_main_seq_spectral_class(spectral_class):
+      if spectral_class in ("O", "B", "A", "F", "G", "K", "M"):
+          return True
+      else:
+          return False
+  ```
+][
+  #set text(size: 20pt)
+  - En *statisk metod* tar _inga_ specialparametrar!
+  #pause
+  - Statiska metoder måste dekoreras med dekoratorn `@staticmethod`.
+  #pause
+  - Notera att vi nu _inte_ kommer åt varken klassens eller instansen attribut.
+  #pause
+  - Statiska metoder används för att utföra något som inte kräver dessa attribut.
+    - Exempelvis att kolla giltigheten av spektralklasser.
+  #pause
+  - Varför är de då metoder? Jo, för att gruppera likartad kod.
+]
+
+== Sammanfattning av klasser
+- En klass är en datatyp.
+  - Både egna och inbyggda datatyper är klasser.
+- Allting i Python är ett objekt, en instans, av en klass.
+  - `5` är en instans av `int`.
+  - Vår stjärna `my_star` är en instans av `Star`.
+- Klasser kan ha:
+  - Instansmetoder för att räkna på instansens data.
+  - Klassmetoder för att behandla klassens data.
+  - Statiska metoder för att gruppera likartad kod.
+
+= Tack för uppmärksamheten!
+

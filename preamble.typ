@@ -37,7 +37,6 @@
     codly(number-format: numbering.with("1"))
   }
 
-
   set table(
     inset: 10pt,
     stroke: (x, y) => {
@@ -78,6 +77,7 @@
         )
       },
       handout: handout,
+      scale-list-items: 0.95,
     ),
   )
 

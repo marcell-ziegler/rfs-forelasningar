@@ -1148,3 +1148,4 @@ if var is None:
 if var is not None:
     ...
 ```
+= Tack för uppmärksaheten!
