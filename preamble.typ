@@ -78,6 +78,7 @@
       },
       handout: handout,
       scale-list-items: 0.95,
+      show-notes-on-second-screen: right,
     ),
   )
 

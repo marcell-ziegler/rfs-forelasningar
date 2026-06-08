@@ -15,17 +15,20 @@
 
 == Struktur <touying:hidden>
 #[
-  #set text(size: 12pt)
+  #set text(size: 11pt)
   #components.adaptive-columns(outline(title: none))
 ]
 
 == Vad är programmering?
 
-- Författandet av _algortimer_,
+- Författandet av *algortimer*,
 - och implementerandet av dessa algoritmer m.h.a. ett programmeringsspråk så att datorn kan utföra dem.
 
 #focus-slide()[
   Det är avsevärt viktigare att förstå algoritmer än att förstå ett givet programmeringsspråk!
+  #speaker-note[
+    Detta är för att algoritmer är språkoberoende!
+  ]
 ]
 
 = Att författa algoritmer <touying:skip>
@@ -40,6 +43,10 @@
 
     ]
   }
+
+  #speaker-note([
+    Vi går vidare till att prata om att författa...
+  ])
 ]
 
 == Ett inledande exempel
@@ -83,6 +90,11 @@
   ]
 ]
 
+#speaker-note([
+  - En enkel algoritm: hitta 3e vinkeln
+  - Ni vet att vinkelsumman är 180$degree$
+])
+
 == Ett lite mer invecklat exempel
 
 #slide(composer: (1fr, 35%))[
@@ -103,6 +115,10 @@
     caption: ["Stir Fry Wok - Free For Commercial Use - FFCU" by Free for Commercial Use är licenserad under CC BY-SA 2.0.],
   )
 ]
+
+#speaker-note([
+  - Nu ett mer invecklat: att tillaga stir-fry
+])
 
 == Ett flödesschema
 #{
@@ -137,6 +153,14 @@
     caption: [Flödesschema för matlagningsalgoritmen],
   )
 }
+
+#speaker-note([
+  - Ett fiffigt sätt att visualisera algoritmer
+  - Former:
+    - Kvadrat: handling
+    - Romb: Beslut
+    - Cirkel: Markör
+])
 
 = Hur algoritmer blir till kod
 
@@ -247,6 +271,14 @@
   )
 }
 
+#speaker-note([
+  - Första sättet kompilering.
+    - Används av språk som C++
+  - Du börjar med *källkod*...
+  - Därefter gör kompilator förberabetning till *GCC IR*.
+  - IR är språkoberende och unikt för kompilatorn
+])
+
 ---
 
 #{
@@ -351,6 +383,13 @@
   )
 }
 
+#speaker-note([
+  - IR görs om till *assembly*:
+    - Människoläslig maskinkod
+  - Detta steg är vad som faktiskt heter "kompilering"
+  - Varje rad är en instruktion för CPU:n
+])
+
 ---
 
 #{
@@ -411,9 +450,17 @@
   )
 }
 
+#speaker-note([
+  - Sist görs *assembly* därefter *länkning*
+  - Assembly: göra om asm till maskinläslig maskinkod
+  - Länkning: koppla maskinkoden till de *bibliotek* som den behöver
+  - Slutligen: Exekvera i terminalen.
+  - Ev. demo?
+])
+
 ---
 
-- _Kompilera_ betyder "sammaställa"
+- *Kompilera* betyder "sammaställa"
 #pause
 - Vi jobbar med hela filen samtidigt
 #pause
@@ -447,87 +494,88 @@
 })
 
 
-#{
-  set align(center + horizon)
-  figure(
-    fletcher-diagram(
-      node(pos: (-1, 0), width: 12cm, label: [
-        #codly(number-format: numbering.with("1"), highlighted-lines: (1,))
-        ```py
-        def greet(name)
-          print(f"Hello, {name}!)
+#alternatives[
+  #{
+    set align(center + horizon)
+    figure(
+      fletcher.diagram(
+        node(pos: (-1, 0), width: 12cm, label: [
+          #codly(number-format: numbering.with("1"), highlighted-lines: (1,))
+          ```py
+          def greet(name)
+            print(f"Hello, {name}!)
 
-        greet("Marcell")
-        ```
-      ]),
-      edge("*-|>"),
-      node(pos: (0, 0), label: move(dy: -1cm, interpreter_box)),
-    ),
-  )
-}
+          greet("Marcell")
+          ```
+        ]),
+        edge("*-|>"),
+        node(pos: (0, 0), label: move(dy: -1cm, interpreter_box)),
+      ),
+    )
+  }
+][
+  #{
+    set align(center + horizon)
+    figure(
+      fletcher.diagram(
+        node(pos: (-1, 0), width: 12cm, label: [
+          #codly(highlighted-lines: (2,))
+          ```py
+          def greet(name)
+            print(f"Hello, {name}!)
 
----
+          greet("Marcell")
+          ```
+        ]),
+        edge("*-|>"),
+        node(pos: (0, 0), label: move(dy: -1cm, interpreter_box)),
+      ),
+    )
+  }
+][
+  #{
+    set align(center + horizon)
+    figure(
+      fletcher.diagram(
+        node(pos: (-1, 0), width: 12cm, label: [
+          #codly(highlighted-lines: (3,))
+          ```py
+          def greet(name)
+            print(f"Hello, {name}!)
 
-#{
-  set align(center + horizon)
-  figure(
-    fletcher-diagram(
-      node(pos: (-1, 0), width: 12cm, label: [
-        #codly(highlighted-lines: (2,))
-        ```py
-        def greet(name)
-          print(f"Hello, {name}!)
+          greet("Marcell")
+          ```
+        ]),
+        edge("*-|>"),
+        node(pos: (0, 0), label: move(dy: -1cm, interpreter_box)),
+      ),
+    )
+  }
+][
+  #{
+    set align(center + horizon)
+    figure(
+      fletcher.diagram(
+        node(pos: (-1, 0), width: 12cm, label: [
+          #codly(highlighted-lines: (4,))
+          ```py
+          def greet(name)
+            print(f"Hello, {name}!)
 
-        greet("Marcell")
-        ```
-      ]),
-      edge("*-|>"),
-      node(pos: (0, 0), label: move(dy: -1cm, interpreter_box)),
-    ),
-  )
-}
-
----
-
-#{
-  set align(center + horizon)
-  figure(
-    fletcher-diagram(
-      node(pos: (-1, 0), width: 12cm, label: [
-        #codly(highlighted-lines: (3,))
-        ```py
-        def greet(name)
-          print(f"Hello, {name}!)
-
-        greet("Marcell")
-        ```
-      ]),
-      edge("*-|>"),
-      node(pos: (0, 0), label: move(dy: -1cm, interpreter_box)),
-    ),
-  )
-}
-
----
-
-#{
-  set align(center + horizon)
-  figure(
-    fletcher-diagram(
-      node(pos: (-1, 0), width: 12cm, label: [
-        #codly(highlighted-lines: (4,))
-        ```py
-        def greet(name)
-          print(f"Hello, {name}!)
-
-        greet("Marcell")
-        ```
-      ]),
-      edge("*-|>"),
-      node(pos: (0, 0), label: move(dy: -1cm, interpreter_box)),
-    ),
-  )
-}
+          greet("Marcell")
+          ```
+        ]),
+        edge("*-|>"),
+        node(pos: (0, 0), label: move(dy: -1cm, interpreter_box)),
+      ),
+    )
+  }
+]
+#speaker-note([
+  - Tolken läser rad-för-rad
+  - Saker körs direkt\*, so fort det går.
+  - Berätta vad som händer varje rad.
+])
 
 ---
 
@@ -549,6 +597,15 @@
 ]
 
 = Terminaldemo!
+
+#speaker-note([
+  - Visa:
+    - cd
+    - mkdir
+    - ls
+    - rm
+    - python
+])
 
 = Hur man skriver och kör kod
 
@@ -593,6 +650,10 @@
 
 == Heltal
 
+#speaker-note([
+  - Beksriv talvärden
+  - Beskriv summan
+])
 - Datorer är binära: talen lagras i bas 2
 - Annars helt normala
 
@@ -608,6 +669,7 @@
     = #num(32768) + #num(4096) + #num(1024) + #num(256) + num(128) + num(8) + num(4) + num(1) = num(38285)
   $
 ]
+
 
 == Flyttal (decimaltal)
 En separat *mantissa* och *exponent*:
