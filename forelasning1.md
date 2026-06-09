@@ -1,0 +1,31 @@
+# Feedback föreläsning 1
+
+- [ ] Mer bilder
+  - [ ] Kanske floats -- inte en simbassäng
+  - [x] Mer färg på ex. flowchart
+- [ ] Faktarutor vid sidan av
+- [x] Triangeln skall inte vara liksidig
+- [ ] Kommandotolk: ge ett verkligt exempel
+- [x] Säg att terminalgenomgången / VSCode genomgången finns i boken
+- [x] Fixa bra rubriker i kompileringen
+- [x] Illustrera strängmetoderna genom att applicera dem på sin beskrivning
+- [x] Saknas string terminator på slide 29
+- [x] Floats med punkt!!
+- [x] Strings kan begränsas med apostrof.
+- [x] inte 0 fakultet! i listor
+- [x] Gå igenom vad highlights i koden är
+- [x] Zebratabeller
+- [x] Fixa ekvivalensen med mängdoperationer
+  - [x] Kanske ta bort?
+- [x] `s != other` på sid. 36
+- [x] Fixa flowchart av beslutsträd på s. 69
+- [x] Keyboard shortcuts på 37 för att skriva `|`
+- [x] Ange kapitel s. 43
+- [x] Extra kolumn s. 46 för beskrivning av division
+- [x] Frågan på 47 är onödig
+- [ ] Lathund för Python
+- [x] Ev. exempel på s. 56
+- [x] Missat space mellan student och "har poäng" på s. 58
+  - [x] Och fel typ av kodblock
+- [x] Exempel för samtliga kontrollstrukturer
+- [x] `val1` -> `value` 1 på s. 64

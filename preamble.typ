@@ -50,6 +50,13 @@
         (left: 1pt + black)
       }
     },
+    fill: (x, y) => {
+      if calc.odd(y) {
+        luma(92%)
+      } else {
+        none
+      }
+    },
   )
   show table.header: strong
 
@@ -59,7 +66,7 @@
     aspect-ratio: "16-9",
     footer: footer,
     config-colors(
-      primary: au-blå,
+      primary: color.hsl(200deg, 80%, 40%, 100%),
       secondary: rgb("#ffc600"),
     ),
     config-common(

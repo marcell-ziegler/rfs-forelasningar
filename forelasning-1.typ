@@ -60,18 +60,19 @@
     cetz-canvas({
       import cetz.draw: *
       let r = 8
+      let a = (2, -1.5)
+      let b = (-3, -1.5)
+      let c = (-1.5, 3.3)
       set-style(stroke: (thickness: 2pt), polygon: (radius: 4))
-      (polygon((), 3, angle: 90deg, name: "tri"))
-      scale(.5)
-      arc((radius: r, angle: -180deg + 30deg), start: 0deg, delta: 60deg, radius: 2, anchor: "origin", name: "a")
-      arc((radius: r, angle: 90deg), start: -90deg - 30deg, delta: 60deg, radius: 2, anchor: "origin", name: "b")
-      arc((radius: r, angle: -30deg), start: 180deg, delta: -60deg, radius: 2, anchor: "origin", name: "c")
-
+      line(a, b, c, close: true)
+      arc(b, start: 0deg, delta: 70deg, radius: 1, anchor: "origin", name: "a")
+      arc(c, start: -110deg, delta: 55deg, radius: 1, anchor: "origin", name: "b")
+      arc(a, start: 180deg, delta: -55deg, radius: 1, anchor: "origin", name: "c")
       content("a.40%", anchor: "south-west", padding: .1, [$theta_1$])
-      content("b.mid", anchor: "north", padding: .1, [$theta_2$])
+      content("b.mid", anchor: "north", padding: .3, [$theta_2$])
       content("c.40%", anchor: "south-east", padding: .1, [$theta_3$])
     }),
-    caption: [En liksidig triangel],
+    caption: [En triangel.],
   )
 ][
   Som känt gäller:
@@ -121,24 +122,28 @@
 ])
 
 == Ett flödesschema
+#let marker = olive.lighten(80%)
+#let action = blue.lighten(80%)
+#let decision = yellow.lighten(80%)
 #{
   set align(center + horizon)
   figure(
     {
       set text(size: 15pt)
       fletcher-diagram(
-        node-stroke: au-blå,
-        node-fill: au-blå.lighten(95%),
+        node-stroke: 1pt,
         node-inset: 10pt,
         spacing: (3em, 5em),
-        node((), [Start], shape: circle, name: <start>),
-        node((1, 0), [Stek grönsakerna\ på medel värme], shape: rect, name: <cook>),
-        node((2, 0), [Gillar kunden\ starkt?], shape: diamond, name: <decision1>),
-        node((2, 1), [Lägg till chili], shape: rect, name: <add_chili>),
-        node((3, 1), [Lägg till socker], shape: rect, name: <add_sugar>),
-        node((2, 2), [Smakar det bra?], shape: diamond, name: <taste>),
-        node((1, 1), [Lägg till salt], shape: rect, name: <add_salt>),
-        node((0, 2), [Servera varmt], shape: rect, name: <serve>),
+        node((), [Start], shape: circle, name: <start>, fill: marker),
+        node((1, 0), [Stek grönsakerna\ på medel värme], shape: rect, fill: action, name: <cook>),
+        node((2, 0), [Gillar kunden\ starkt?], shape: diamond, fill: decision, name: <decision1>),
+        node((2, 1), [Lägg till chili], shape: rect, name: <add_chili>, fill: action),
+        node((3, 1), [Lägg till socker], shape: rect, name: <add_sugar>, fill: action),
+        node((2, 2), [Smakar det bra?], shape: diamond, name: <taste>, fill: decision),
+        node((1, 1), [Lägg till salt], shape: rect, name: <add_salt>, fill: action),
+        node((0, 2), [Servera varmt], shape: rect, name: <serve>, fill: action),
+        edge("u", "*-|>"),
+        node((0, 1), [Klart!], shape: circle, fill: red.lighten(80%)),
         edge(<start>, <cook>, "*-|>"),
         edge(<cook>, <decision1>, "*-|>"),
         edge(<decision1>, <add_chili>, label: [Ja], "*--|>"),
@@ -198,9 +203,10 @@
 #{
   set align(center + horizon)
   fletcher-diagram(
-    spacing: (1cm, 3cm),
+    spacing: (1cm, 0cm),
     edge-stroke: 2pt + black,
     mark-scale: 60%,
+    node((0, -1), move(dy: 1.1cm, text(size: 16pt)[*Källkod*\ blir till\ *IR: Intermediate Representation*])),
     (
       node(pos: (-1, 0), width: 8cm, label: [
         #set text(size: 14pt)
@@ -216,8 +222,8 @@
         ```
       ]),
       node(pos: (0, 0), label: move(dy: -1cm, compiler_box([Förbearbetning]))),
-      node(pos: (1, 0), width: 8cm, label: [
-        #set text(size: 5.0pt)
+      node(pos: (1, 0), width: 8cm, label: move(dy: -1.0cm)[
+        #set text(size: 4.2pt)
         ```gcc_ir
         # 1 "hello.cpp"
         # 1 "<built-in>"
@@ -283,13 +289,14 @@
 
 #{
   set align(center + horizon)
-  fletcher-diagram(
-    spacing: (1cm, 3cm),
+  scale(90%, fletcher-diagram(
+    spacing: (1cm, 0cm),
     edge-stroke: 2pt + black,
     mark-scale: 60%,
+    node((0, -1), move(dy: 1.1cm, text(size: 14pt)[*IR: Intermediate Representation*\ blir till\ *Assemblykod*])),
     (
-      node(pos: (-1, 0), width: 8cm, label: [
-        #set text(size: 5.0pt)
+      node(pos: (-1, 0), width: 8cm, label: move(dy: -8mm)[
+        #set text(size: 4.2pt)
         ```gcc_ir
         # 1 "hello.cpp"
         # 1 "<built-in>"
@@ -340,8 +347,8 @@
         ```
       ]),
       node(pos: (0, 0), label: move(dy: -1cm, compiler_box([Kompilering]))),
-      node(pos: (1, 0), width: 8cm, label: [
-        #set text(size: 7pt)
+      node(pos: (1, 0), width: 8cm, label: move(dy: -8mm)[
+        #set text(size: 6pt)
         ```yasm
         	.file	"hello.cpp"
         #APP
@@ -380,7 +387,7 @@
         ```
       ]),
     ).intersperse(edge("*-|>")),
-  )
+  ))
 }
 
 #speaker-note([
@@ -395,12 +402,13 @@
 #{
   set align(center + horizon)
   fletcher-diagram(
-    spacing: (1cm, 3cm),
+    spacing: (1cm, 0cm),
     edge-stroke: 2pt + black,
     mark-scale: 60%,
+    node((0, -1), move(dy: 1.1cm, text(size: 14pt)[*Assemblykod*\ blir till\ *Körbar fil*])),
     (
-      node(pos: (-1, 0), width: 8cm, label: [
-        #set text(size: 7pt)
+      node(pos: (-1, 0), width: 8cm, label: move(dy: -8mm)[
+        #set text(size: 6.1pt)
         ```yasm
         	.file	"hello.cpp"
         #APP
@@ -605,6 +613,7 @@
     - ls
     - rm
     - python
+  - *Nämn att allt finns i boken!*
 ])
 
 = Hur man skriver och kör kod
@@ -619,7 +628,8 @@
   ```
 + Kör koden!
 
-= Rast! (15 min)
+#speaker-note([*Nämn att allt finns i boken!*])
+
 
 = Variabler
 
@@ -648,7 +658,12 @@
 
 = Datatyper
 
-== Heltal
+== Numeriska typer
+- De numeriska typerna i Python:
+  - `int`: heltal
+  - `float`: Flyttal (tal med decimaler)
+
+== Heltal --- `int`
 
 #speaker-note([
   - Beksriv talvärden
@@ -671,7 +686,7 @@
 ]
 
 
-== Flyttal (decimaltal)
+== Flyttal (decimaltal) --- `float`
 En separat *mantissa* och *exponent*:
 $
   m dot 2^x
@@ -693,6 +708,8 @@ Samma som på miniräknare:
 
 De skrivs alltså i bas 10, men lagras i bas 2 som flyttal.
 
+*Flyttal skrivs med punkt* (`.`) och inte med kommatecken (`,`)!
+
 == Booleska värden
 
 - Också känt som sant/falskt-värden
@@ -706,11 +723,12 @@ De skrivs alltså i bas 10, men lagras i bas 2 som flyttal.
 
 - Text lagras som listor med bokstäver (*grapheme clusters*), och kallas *strängar*.
 #pause
-- En *sträng* skrivs inom citationstecken, `"någon text"`.
+- En *sträng* skrivs inom citationstecken, `"någon text"`#footnote[Du kan även använda apostrofer: `'någon text'`. Detta är dock ovanligt och avråds.].
   - Dett är för att urskilja det från omgivande kod.
 #pause
 - Dessa lagras kodade, som ett schiffer, med 8 binära siffror för varje karaktär.
   - De vanligaste kodningarna är `UTF-8` (Unicode) och `ASCII`.
+
 
 == Att formatera strängar
 - Vi kan skriva en särskild *f-sträng* för att skjuta in variabeldata.
@@ -718,22 +736,28 @@ De skrivs alltså i bas 10, men lagras i bas 2 som flyttal.
 #pause
 - Inskjutna värden skrivs i `{}` och ev. formateras som ex. `{:.2f}`#footnote[Du kan läsa mer i #link("https://docs.python.org/3/library/string.html#formatspec", [Pythondokumentationen]).].
 #[
+  #v(-.6em)
   #set text(size: 17pt)
   ```py
-  print(f"Eleven {name}s ålder är {age}. Hen fick {score:.2f} poäng på provet.)
+  print(f"Eleven {name}s ålder är {age}. Hen fick {score:.2f} poäng på provet.")
   ```
 ]
 #pause
-- Det finns även specialfunktioner för att göra vissa saker#footnote[Detta är ett urval, det finns mycket, mycket fler #link("https://docs.python.org/3/library/stdtypes.html#string-methods", [i dokumentationen]).]:
+#text(size: 20pt, move(dy: -.6em)[
+  - Det finns även specialfunktioner för att göra vissa saker#footnote[Detta är ett urval, det finns mycket, mycket fler #link("https://docs.python.org/3/library/stdtypes.html#string-methods", [i dokumentationen]).]:
+])
+#v(-.6em)
 #columns(3)[
   #set text(size: 16pt)
   - `str.strip()`: ta bort whitespace före/efter en sträng.
   - `str.lower()`: gör allt till endast gemener.
-  - `str.upper()`: gör allt till endast versaler.
-  - `str.replace(a, b)`: byter ut alla delsträngar `a` med `b`.
-  - `str.capitalize()`: gör första bokstav versal, annars gemen.
+  - `str.upper()`: GÖR ALLT TILL ENDAST VERSALER.
+  - `str.replace("a", "b")`: byter ut bllb delsträngbr `"b"` med `"a"`#footnote[Notera att det är omvänt pga. skämtet, haha etc.].
+  - `str.capitalize()`: Gör första bokstav versal, annars gemen.
   - `str.isdecimal()`: `True` om strängen är ett giltigt tal i bas 10.
 ]
+
+= Rast! (15 min)
 
 == Kollektioner
 
@@ -764,7 +788,9 @@ De skrivs alltså i bas 10, men lagras i bas 2 som flyttal.
   my_list = [2, 5, "Hej!"]
   val = my_list[2]
   ```
-  - Index börjar från 0!
+  - *OBS!* Index börjar från 0.
+
+#speaker-note([*Gå igenom highlights!* (`codly`)])
 
 == Att skjuta till, resp. ta bort element ur en lista.
 - Om du vill lägga till ett värde i en lista använder du `list.append()`.
@@ -823,16 +849,16 @@ fruits = {"apple", "banana", "orange"}
 #table(
   columns: 3,
   table.header([Operation], [Notation], [Beskrivning]),
-  [Inklusion], [`x in s`], [`True` om `x` är i mängden `s`. Ekv. med $x in s$.],
-  [Exklusion], [`x not in s`], [Omvänt ovan. Ekv. med $x in.not s$.],
+  [Inklusion], [`x in s`], [`True` om `x` är i mängden `s`.],
+  [Exklusion], [`x not in s`], [Omvänt ovan.],
 
   [Delmängd],
   [`s <= other`],
-  [`True` om `s` är en delmängd av `other`. Dvs. att alla element i `s` också finns i `other`. Ekv. med $s subset.eq "other"$.],
+  [`True` om `s` är en delmängd av `other`. Dvs. att alla element i `s` också finns i `other`.],
 
   [Äkta delmängd],
   [`s < other`],
-  [`True` om `s` är en äkta delmängd av `other`. Dvs. att alla element i `s` också finns i `other`, men `s != 0`. Ekv. med $s subset "other"$.],
+  [`True` om `s` är en äkta delmängd av `other`. Dvs. att alla element i `s` också finns i `other`, men `s != other`.],
 )
 
 ---
@@ -840,12 +866,16 @@ fruits = {"apple", "banana", "orange"}
 
   columns: 3,
   table.header([Operation], [Notation], [Beskrivning]),
-  [Union], [`s | other | ...`], [Utvärderas till unionen av alla mängder. Ekv. med $s union "other" union ...$.],
-  [Snitt], [`s & other & ...`], [Utvärderas till snittet mellan alla mängder. Ekv. med $s inter "other" inter ...$.],
-  [Differens],
-  [`x - s - ...`],
-  [Utvärderas till elementen i `s` som inte finns med i alla andra mängder. Ekv. med $s backslash ("other" union ...)$.],
+  [Union], [`s | other | ...`], [Utvärderas till unionen av alla mängder.],
+  [Snitt], [`s & other & ...`], [Utvärderas till snittet mellan alla mängder.],
+  [Differens], [`x - s - ...`], [Utvärderas till elementen i `s` som inte finns med i alla andra mängder.],
 )
+
+En `|` skriver du med `AltGr + <`:
+#place(bottom + right, figure(
+  image("KB_Sweden.svg", height: 4cm),
+  caption: [Svenskt tangentbord. Av _StuartBrady_,\ Wikimedia Commons, licenserad under #link("https://creativecommons.org/licenses/by-sa/3.0/", [CC-BY-SA 3.0]).],
+))
 
 == Gör mängder av listor
 - Om du vill ta bort dubletter, är det lättaste att göra om listan till en mängd.
@@ -906,7 +936,7 @@ del id_numbers["Bertil"]
 - Du kan inte kombinera datatyper hur som helst.
 #pause
 - Ex. är `tal1 + tal2` en giltig operation, men `text + tal` är inte det.
-  - Läs vidare #link("https://astronomicentrum.se/bok/att-andra-datatyp/", [i boken])!
+  - Läs vidare i bokens kapitel #link("https://astronomicentrum.se/bok/att-andra-datatyp/", [_Att ändra datatyp_])!
 
 = Räkna i Python
 
@@ -924,16 +954,16 @@ De är _binära_ eftersom de krävs två *operander*.
 
 == Binära operatörer
 #table(
-  columns: (auto, auto, auto),
-  align: (center, left, left),
-  table.header([*Operator*], [*Namn*], [*Användning*]),
-  `+`, [Addition], `5 + 5`,
-  `-`, [Subtraktion], `3 - 4`,
-  `/`, [Division], `1.5 / 3`,
-  `*`, [Multiplikation], `7.6 * 5`,
-  `**`, [Exponentiering], `3**2`,
-  `//`, [Trunkerande division], `3.6 // 2`,
-  `%`, [Modulus], `6 % 2`,
+  columns: (auto, auto, auto, auto),
+  align: (center + horizon, left + horizon, center + horizon, left + horizon),
+  table.header([*Operator*], [*Namn*], [*Användning*], [*Egenskaper*]),
+  `+`, [Addition], `5 + 5`, [],
+  `-`, [Subtraktion], `3 - 4`, [],
+  `/`, [Division], `1.5 / 3`, [Returnerar _ofta_ en `float`.],
+  `*`, [Multiplikation], `7.6 * 5`, [],
+  `**`, [Exponentiering], `3**2`, [],
+  `//`, [Trunkerande division], `3.6 // 2`, [Returnerar _alltid_ en `int`, avrundad nedåt.],
+  `%`, [Modulus], `6 % 2`, [Ger rest vid division av vänster med höger.],
 )
 
 == Att räkna med variabler
@@ -944,7 +974,7 @@ Precis som i matten kan du räkna med värdena som finns i variabler
 Du kan också ändra variablers värde efter du skapat dem:
 #{
   set text(size: 18pt)
-  ```python
+  ```py
   num = 3
   num += 2
   num -= 1
@@ -952,7 +982,6 @@ Du kan också ändra variablers värde efter du skapat dem:
   num *= 4
   ```
 }
-Vad är värdet av `num` nu?
 
 == Aritmetikliknande operationer på kollektioner
 - Du kan "addera" `list`#footnote()[Detta är inte alls vektoraddition för inbyggda `list` och `tuple`.]<non-vec-addition-note>, `tuple`#footnote(<non-vec-addition-note>) och `str`.
@@ -1030,12 +1059,22 @@ Funktionen `print()` klarar alla datatyper som kan göras till text, men tänk o
 
 Med två värden: `student` & `points` kan vi t.ex. skriva
 
-```py
-print("Eleven")
-print(student)
-print("har poäng:")
-print(points)
-```
+#columns(2)[
+  ```py
+  print("Eleven")
+  print(student)
+  print("har poäng:")
+  print(points)
+  ```
+  #colbreak()
+  med `student = "Malva"` och `points = 15` får vi ex.
+  ```stdout
+  Eleven
+  Malva
+  har poäng:
+  15
+  ```
+]
 ---
 
 Föregående exempel är osmidigt och fult, vi använder i stället f-strängar.
@@ -1049,8 +1088,8 @@ Värdena inom klamrar utvärderas och konverteras automatiskt till `str`.
 ---
 
 Vi kan också använda strängaddition:
-```python
-print("Eleven " + student + "har poäng: " + str(points))
+```py
+print("Eleven " + student + " har poäng: " + str(points))
 ```
 Notera hur vi behövde konvertera manuellt här!
 Notera också mellanslagen som måste vara med!
@@ -1058,12 +1097,19 @@ Notera också mellanslagen som måste vara med!
 = Kontrollstrukturer
 
 == `if`-satsen
-Om \_\_\_ är `True`, gör \_\_\_.
-
-```py
-if expr:
-    ...
-```
+#columns(2)[
+  Om \_\_\_ är `True`, gör \_\_\_.
+  ```py
+  if expr:
+      ...
+  ```
+  #colbreak()
+  Exempel:
+  ```py
+  if b > 5:
+      print("b är större än 5!")
+  ```
+]
 Viktigt att notera:
 
 - Kolon efter uttrycket
@@ -1072,18 +1118,27 @@ Viktigt att notera:
 
 == `else`-satsen
 
-Om förra `if`-satsen inte kördes, gör \_\_\_.
-
-#{
-  codly(highlighted-lines: (3, 4))
-  set text(size: 20pt)
+#columns(2)[
+  Om förra `if`-satsen inte kördes, gör \_\_\_.
+  #{
+    codly(highlighted-lines: (3, 4))
+    set text(size: 20pt)
+    ```py
+    if expr:
+        ...
+    else:
+        ...
+    ```
+  }
+  #colbreak()
+  Exempel:
   ```py
-  if expr:
-      ...
+  if c >= 5:
+      print("c är större än el. lika med 5!")
   else:
-      ...
+      print("c är mindre än 5!")
   ```
-}
+]
 Viktigt att notera:
 
 - Samma indenteringsgrad som sin tillhörande `if`-sats
@@ -1091,18 +1146,28 @@ Viktigt att notera:
 - Utgör ett *block* men inte ett *scope*
 
 == `elif`-satsen
-Om förra `if`-satsen inte kördes, men \_\_\_ är `True`, gör \_\_\_.
+#columns(2)[
+  Om förra `if`-satsen inte kördes, men \_\_\_ är `True`, gör \_\_\_.
 
-#{
-  codly(highlighted-lines: (3, 4))
-  set text(size: 20pt)
+  #{
+    codly(highlighted-lines: (3, 4))
+    set text(size: 20pt)
+    ```py
+    if expr:
+        ...
+    elif expr2:
+        ...
+    ```
+  }
+  #colbreak()
+  Exempel:
   ```py
-  if expr:
-      ...
-  elif expr2:
-      ...
+  if score > 50:
+      print("Du vann!")
+  elif score > 40:
+      print("Du klarade dig nästan!")
   ```
-}
+]
 Viktigt att notera:
 
 - Samma indenteringsgrad som sin tillhörande `if`-sats
@@ -1110,35 +1175,80 @@ Viktigt att notera:
 - Utgör ett *block* men inte ett *scope*
 
 == Kedja `if`-satser
-Man kan skapa en kedja av kontrollstrukturer:
-#{
-  set text(size: 16pt)
-  ```py
-  if expr1:
-      ...
-  elif expr2:
-      ...
-  elif expr3:
-      ...
-  else:
-      ...
-  ```
-}
+#table(
+  columns: (60%, auto),
+  stroke: none,
+  column-gutter: .8em,
+  [
+    Man kan skapa en kedja av kontrollstrukturer:
+    #{
+      set text(size: 16pt)
+      ```py
+      if expr1:
+          ...
+      elif expr2:
+          ...
+      elif expr3:
+          ...
+      else:
+          ...
+      ```
+    }
+  ],
+  [
+    Exempel:
+    #set text(size: 16pt)
+    ```py
+    if grade > 90:
+        print("A")
+    elif grade > 75:
+        print("C")
+    elif grade > 50:
+        print("E")
+    else:
+        print("F")
+    ```
+  ],
+)
 
 Uttrycken utvärderas i ordning, den första som är sann körs sen körs inga andra. Om ingen är sann körs alltid `else`-satsen.
 
 == Kedjor med `match`-satsen
-En mer sällan använd sats är `match`-satsen. Den låter dig göra en mer kompakt kedja baserat på olika möjligheter på värdet av samma uttryck.
+#columns(2)[
+  `match`-satsen låter dig göra mer kompakta kedjor.
 
-```py
-match expr:
-    case val1:
-        ...
-    case val2:
-        ...
-```
+  #{
+    set text(size: 18pt)
 
-Den första gren vars värde överensstämmer med `expr` körs. Om ingen matchar, körs ingen. Endast en gren kan köras totalt. `case _:` hade matchat vad som helst.
+    ```py
+    match expr_to_compare:
+        case value1:
+            ...
+        case value2:
+            ...
+        case _:
+            ...
+    ```
+  }
+  #colbreak()
+  Exempel:
+  #set text(size: 14pt)
+  ```py
+  match grade:
+      case "A":
+          print("Utmärkt!")
+      case "C":
+          print("Bra!")
+      case "E":
+          print("Okej!")
+      case "F":
+          print("Nästan!")
+      case _:
+          print("Ogiltigt betyg!")
+  ```
+]
+
+Den första grenen vars värde överensstämmer med `expr` körs. Om ingen matchar, körs ingen. Endast en gren kan köras totalt. `case _:` hade matchat vad som helst.
 
 = Booleska uttryck (Sant/Falskt-uttryck)
 
@@ -1189,6 +1299,32 @@ Kombinerade uttryck
 if (a == 5 and b > 5) or (c < 5 or d >= 7):
     ...
 ```
+
+#place(bottom + left, [`a = 4`\ `b = 6`], dy: -2cm, dx: 1cm)
+#place(bottom + right, [`c = 6`\ `d = 4`], dy: -2cm, dx: -1cm)
+
+#align(center, {
+  fletcher-diagram(
+    spacing: (10mm, 15mm),
+    node-inset: 4mm,
+    node-stroke: 1pt + black,
+    node((-3, 0), [`a == 5`], name: "expr1", shape: pill, fill: olive.lighten(80%)),
+    edge("r", "-|>"),
+    node((-1, 0), [`b > 5`], name: "expr2", shape: pill, fill: olive.lighten(80%)),
+    edge("l", "-|>"),
+    node((-2, 0), [och], name: "and1", fill: blue.lighten(80%), shape: rect),
+    edge("d,r,r", "-|>", [`False`]),
+    node((1, 0), [`c < 5`], name: "expr3", shape: pill, fill: olive.lighten(80%)),
+    edge("r", "-|>"),
+    node((3, 0), [`d >= 5`], name: "expr4", shape: pill, fill: olive.lighten(80%)),
+    edge("l", "-|>"),
+    node((2, 0), [eller], name: "or1", fill: blue.lighten(80%), shape: rect),
+    edge("d,l,l", "-|>", [`True`]),
+    node((0, 1), [eller], name: "or2", fill: blue.lighten(80%), shape: rect),
+    edge("-|>", []),
+    node((0, 2), [`True`], name: "decision", shape: pill, fill: purple.lighten(80%)),
+  )
+})
 
 ---
 
