@@ -813,6 +813,54 @@ Hej
 #pause
 Vi måste ha en *iterationsvariabel*, men vi låter den heta `_` för att visa att vi inte använder den.
 
+== Generatorfunktioner
+- En speciell typ av funktion, en *generatorfunktion*, kan hjälpa dig bl.a. manipulera iterabla värden.
+#pause
+- `zip(coll1, coll2, ...)` låter dig iterera över flera lika långa kollektioner samtidigt.
+- `enumerate(collection)` låter dig iterera över index och värde samtidigt.
+
+---
+=== Exempel på `zip()`
+#alternatives[
+  ```py
+  list1 = [1, 3, 6, 0]
+  list2 = [3, 5, 12, 3]
+
+  for value1, value2 in zip(list1, list2):
+      print(f"The value in list1: {value1}")
+      print(f"The value in list2: {value2}")
+      print()
+
+  ```
+][
+  #set text(size: 18pt)
+  ```stdout
+  The value in list1: 1
+  The value in list2: 3
+
+  The value in list1: 3
+  The value in list2: 5
+
+  The value in list1: 6
+  The value in list2: 12
+
+  The value in list1: 0
+  The value in list2: 3
+  ```
+]
+---
+=== Exempel på `enumerate()`
+```py
+my_list = ["Word1", "Word2", "Word3"]
+
+for i, word in enumerate(my_list):
+    print(f"Word {i} is {word}")
+```
+```stdout
+Word 0 is Word1
+Word 1 is Word2
+Word 2 is Word3
+```
 == Att smidigt generera listor med comprehensions
 
 - En *`list`-comprehension*#footnote[Dit finns faktiskt comprehensions för annat än listor! Kolla in detta i bokens kapitel #link("https://www.astronomicentrum.se/bok/kollektioner#comprehensions-ett-s-tt-att-bygga-kollektioner", [Kollektioner])] är en speciell `for`-slinga som skapar en lista.
