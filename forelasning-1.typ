@@ -710,7 +710,7 @@ De skrivs alltså i bas 10, men lagras i bas 2 som flyttal.
 
 *Flyttal skrivs med punkt* (`.`) och inte med kommatecken (`,`)!
 
-== Booleska värden
+== Booleska värden --- `bool`
 
 - Också känt som sant/falskt-värden
 #pause
@@ -719,7 +719,7 @@ De skrivs alltså i bas 10, men lagras i bas 2 som flyttal.
 - Lagras som en 1:a för `True`, och 0:a för `False`
   - Det betyder dock inte att de är likvärdiga med en `int`!
 
-== Text
+== Text --- `str`
 
 - Text lagras som listor med bokstäver (*grapheme clusters*), och kallas *strängar*.
 #pause
@@ -728,6 +728,21 @@ De skrivs alltså i bas 10, men lagras i bas 2 som flyttal.
 #pause
 - Dessa lagras kodade, som ett schiffer, med 8 binära siffror för varje karaktär.
   - De vanligaste kodningarna är `UTF-8` (Unicode) och `ASCII`.
+
+#pause
+Om du vill infoga blankrader i en sträng: använda en *escape sequence* som heter *newline* och stavas `\n`. Exempel:
+#v(-.4em)
+#{
+  set text(size: 18pt)
+  ```py
+  print("Er föreläsare:\nMarcell")
+  ```
+  v(-.7em)
+  ```stdout
+  Er föreläsare:
+  Marcell
+  ```
+}
 
 
 == Att formatera strängar
@@ -757,7 +772,20 @@ De skrivs alltså i bas 10, men lagras i bas 2 som flyttal.
   - `str.isdecimal()`: `True` om strängen är ett giltigt tal i bas 10.
 ]
 
+== Sammanfattning av grundläggande datatyper
+#table(
+  columns: 3,
+  align: (center + horizon, center + horizon, left + horizon),
+  table.header([*Datatyp*], [*Beskrivning*], [*Använding*]),
+  [`int`], [Heltal], [Ett exempel: `5`.],
+  [`float`], [Flyttal], [Representerar decimaltal. Exempel: `5.5`, `3e6`, `5.7e-2`.],
+  [`bool`], [Boolskt värde], [Representerar sant och falskt. Använd nyckelorden `True` och `False`. OBS! Stor bokstav.],
+  [`str`], [Sträng], [Lagrar all typ av text. Skrivs alltid inom citationstecken: `""`. Exempel: `"Hej!"`.],
+)
+
 = Rast! (15 min)
+
+= Datatyper <touying:hidden>
 
 == Kollektioner
 
@@ -931,6 +959,112 @@ Exempel:
 del id_numbers["Bertil"]
 ```
 
+== `str` som kollektion
+
+- Strängen är ju en lista med karaktärer,
+  - Alltså kan vi indexera i den.
+#pause
+- Samma regler som andra kollektioner gäller.
+  - Index är n:te karaktären från vänster.
+#pause
+Exempel:
+```py
+my_string = "Hej!"
+
+print(f"Karaktär vid idx 2: {my_string[2]}")
+```
+```stdout
+j
+```
+
+== Att komma åt delar av kollektioner
+- För att få ut en del av en kollektion, eller en delsträng, används *slicenotation*.
+#pause
+- En slice noteras `[start:stop]` där:
+  - Både `start` och `stop` är frivilliga
+  - Kolon (`:`) är obligatoriskt
+#pause
+#table(
+  columns: 2,
+  align: (center + horizon, left + horizon),
+  table.header([*Notation*], [*Beskrivning*]),
+  text(size: 20pt)[`collection[start:]`], text(size: 20pt)[Alla värder från och _med_ `start` till slutet.],
+  text(size: 20pt)[`collection[:stop]`],
+  text(size: 20pt)[Alla värder från och _med_ början till, men _inte med_ `stop`.],
+
+  text(size: 20pt)[`collection[start:stop]`],
+  text(size: 20pt)[Alla värder från och _med_ `start` till, men _inte med_ `stop`.],
+
+  text(size: 20pt)[`collection[:]`], text(size: 20pt)[Alla värden.],
+)
+
+---
+
+=== Ett exempel på några slices
+#{
+  set text(size: 20pt)
+  ```py
+  my_string = "Många ord"
+  print(f"Positioner 3 och 4: {my_string[3:5]}")
+  ```
+  ```stdout
+  Positioner 3 och 4: ga
+  ```
+  line(length: 100%)
+  ```py
+  print(f"Från början till 4: {my_string[:4]}")
+  print(f"Från och med 3 till slutet: {my_string[3:]}")
+  ```
+  ```stdout
+  Från början till 4: Mång
+  Från och med 3 till slutet: ga ord
+  ```
+}
+
+== Sammanfattning av kollektioner
+
+#table(
+  columns: (auto, 9cm, 1fr),
+  table.header([*Kollektion*], [*Notation*], [*Använidngsområde*]),
+  align: (center + horizon, center + horizon, left + horizon),
+  [`list`],
+  text(size: 15pt)[
+    ```py
+    [1, 2, "Hej!"]
+    ```
+  ],
+  text(size: 19pt)[Ordnad data som skall hämtas med numeriskt index. Bra för det mesta!],
+
+  [`tuple`],
+  text(size: 15pt)[
+    ```py
+    ("Hejdå!", 5, 3.8)
+    ```
+  ],
+  text(size: 19pt)[Ordnad data och där listans läng är känd. Bra för konstanter och returvärden],
+
+  [`set`],
+  text(size: 15pt)[
+    ```py
+    { "Äpple", "Banan"}
+    ```
+  ],
+  text(
+    size: 19pt,
+  )[Oordnad data varse unikhet måste garanteras. Mycket långsam datatyp, använd endast om du måste ha unikhet!],
+
+  [`dict`],
+  text(size: 15pt)[
+    ```py
+    {
+      "Macell": 13.2,
+      "Alva": 8.5
+    }
+    ```
+  ],
+  text(size: 19pt)[Ordnad data med textuell (el. annan) indexering. bra för uppslagstabeller.],
+)
+
 == Hur datatyper interagerar
 
 - Du kan inte kombinera datatyper hur som helst.
@@ -969,7 +1103,7 @@ De är _binära_ eftersom de krävs två *operander*.
 == Att räkna med variabler
 
 Precis som i matten kan du räkna med värdena som finns i variabler
-#footnote([Mer intressant matte finns #link("https://astronomicentrum.se/bok/aritmetik/#andra-matematiska-funktioner", [i boken])!]).
+#footnote([Mer intressant matte finns i bokens kapitel #link("https://astronomicentrum.se/bok/aritmetik/#andra-matematiska-funktioner", [Aritmetik och beräkningar])!]).
 
 Du kan också ändra variablers värde efter du skapat dem:
 #{

@@ -813,6 +813,41 @@ Hej
 #pause
 Vi måste ha en *iterationsvariabel*, men vi låter den heta `_` för att visa att vi inte använder den.
 
+== Att smidigt generera listor med comprehensions
+
+- En *`list`-comprehension*#footnote[Dit finns faktiskt comprehensions för annat än listor! Kolla in detta i bokens kapitel #link("https://www.astronomicentrum.se/bok/kollektioner#comprehensions-ett-s-tt-att-bygga-kollektioner", [Kollektioner])] är en speciell `for`-slinga som skapar en lista.
+#pause
+- Använd gärna detta i stället för att fylla på en tom lista via `for`-slinga!
+#pause
+Exempel:
+#columns(2)[
+  #set text(size: 16pt)
+  ```py
+  import math
+
+  square_roots = [math.sqrt(num) for num in range(4)]
+  print(square_roots)
+  ```
+  ```stdout
+  [0.0, 1.0, 1.4142135623730951, 1.7320508075688772]
+  ```
+  #colbreak()
+  ```py
+  strings = ["HelLO THerE", "RymDForSKArSKoLAn", "ETT SKRIK"]
+
+  lower_strings = [string.lower() for string in strings]
+  print(f"{lower_strings=}")
+  ```
+  ```stdout
+  ['hello there', 'rymdforskarskolan', 'ett skrik']
+  ```
+]
+
+#speaker-note([
+  - Nämn att det finns fler comprehensions!
+  - Det går ockås att filtrera, läs på själva!
+])
+
 = Rast! (15 min)
 
 = Klasser & Objekt
