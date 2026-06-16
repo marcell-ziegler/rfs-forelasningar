@@ -16,7 +16,7 @@
 
 == Struktur <touying:hidden>
 #[
-  #set text(size: 11pt)
+  #set text(size: 10.4pt)
   #components.adaptive-columns(outline(title: none))
 ]
 

@@ -6,7 +6,31 @@
 #import "@preview/lovelace:0.3.1": *
 #import "@preview/fletcher:0.5.8" as fletcher: diagram, edge, node
 #import fletcher.shapes: circle, diamond, pill, rect
-#import "@preview/zero:0.6.1": num
+#import "@preview/zero:0.6.1": num, zi
+#import "@preview/zap:0.5.0" as zap
+
+
+#let battery(name, ..params) = {
+  let const = (w: .2, h: 1)
+
+  let draw(ctx, position, style) = {
+    zap.interface(
+      (-const.w / 2, -const.h / 2),
+      (const.w / 2, const.h / 2),
+      io: position.len() < 2,
+    )
+
+    // pass style to entire scope: `cetz.draw.set-style(..style)`
+    // or just a single item:
+    // zap.cetz.draw.rect("bounds.north-east", "bounds.south-west", ..style)
+    zap.cetz.draw.line("bounds.north-west", "bounds.south-west")
+    zap.cetz.draw.line(
+      (rel: (0, -const.h / 4), to: "bounds.north-east"),
+      (rel: (0, const.h / 4), to: "bounds.south-east"),
+    )
+  }
+  zap.component("resistor", name, draw: draw, ..params)
+}
 
 // cetz and fletcher bindings
 #let cetz-canvas = touying-reducer.with(reduce: cetz.canvas, cover: cetz.draw.hide.with(bounds: true))
@@ -15,6 +39,10 @@
 #let pseudocode-list = pseudocode-list.with(hooks: .5em, line-gap: .7em)
 
 #let au-blå = rgb("#00205b")
+
+// #let volt = zi.declare("V")
+// #let amp = zi.declare("A")
+// #let ohm = zi.declare($Omega$)
 
 #let template(footer: [], handout: false, doc) = {
   show figure.caption: set text(size: 12pt, fill: luma(50%))
@@ -61,6 +89,20 @@
   show table.header: strong
 
   set list(marker: ([#move(scale(text(fill: au-blå, sym.star.op), 150%), dy: -.15em)], [‣], [--]))
+
+  show image: box.with(radius: 10pt, clip: true)
+
+  set quote(block: true)
+  show quote.where(block: true): it => {
+    set align(center)
+    block(width: 95%, { ["] + h(0pt, weak: true) + text(style: "italic", it.body) + h(0pt, weak: true) + ["] })
+    if it.attribution != none {
+      set align(right)
+      set text(fill: luma(30%))
+      [-- #it.attribution]
+    }
+  }
+
 
   show: simple-theme.with(
     aspect-ratio: "16-9",
