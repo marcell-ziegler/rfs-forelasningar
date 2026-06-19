@@ -15,7 +15,7 @@
 
 == Struktur <touying:hidden>
 #[
-  #set text(size: 11pt)
+  #set text(size: 10.9pt)
   #components.adaptive-columns(outline(title: none))
 ]
 
@@ -733,7 +733,7 @@ De skrivs alltså i bas 10, men lagras i bas 2 som flyttal.
 Om du vill infoga blankrader i en sträng: använda en *escape sequence* som heter *newline* och stavas `\n`. Exempel:
 #v(-.4em)
 #{
-  set text(size: 18pt)
+  set text(size: 14pt)
   ```py
   print("Er föreläsare:\nMarcell")
   ```
@@ -746,30 +746,35 @@ Om du vill infoga blankrader i en sträng: använda en *escape sequence* som het
 
 
 == Att formatera strängar
-- Vi kan skriva en särskild *f-sträng* för att skjuta in variabeldata.
-  - Strängen skrivs `f""`.
-#pause
-- Inskjutna värden skrivs i `{}` och ev. formateras som ex. `{:.2f}`#footnote[Du kan läsa mer i #link("https://docs.python.org/3/library/string.html#formatspec", [Pythondokumentationen]).].
 #[
+  #set text(size: 20pt)
+  - Vi kan skriva en särskild *f-sträng* för att skjuta in variabeldata.
+    - Strängen skrivs `f""`.
+  #pause
+  - Inskjutna värden skrivs i `{}` och ev. formateras som ex. `{:.2f}`#footnote[Du kan läsa mer i #link("https://docs.python.org/3/library/string.html#formatspec", [Pythondokumentationen]).].
+  #[
+    #v(-.6em)
+    #set text(size: 17pt)
+    ```py
+    print(f"Eleven {name}s ålder är {age}. Hen fick {score:.2f} poäng på provet.")
+    ```
+  ]
+  #pause
+  #text(size: 20pt, move(dy: -.6em)[
+    - Det finns även specialfunktioner för att göra vissa saker#footnote[Detta är ett urval, det finns mycket, mycket fler #link("https://docs.python.org/3/library/stdtypes.html#string-methods", [i dokumentationen]).]:
+  ])
   #v(-.6em)
-  #set text(size: 17pt)
-  ```py
-  print(f"Eleven {name}s ålder är {age}. Hen fick {score:.2f} poäng på provet.")
-  ```
-]
-#pause
-#text(size: 20pt, move(dy: -.6em)[
-  - Det finns även specialfunktioner för att göra vissa saker#footnote[Detta är ett urval, det finns mycket, mycket fler #link("https://docs.python.org/3/library/stdtypes.html#string-methods", [i dokumentationen]).]:
-])
-#v(-.6em)
-#columns(3)[
-  #set text(size: 16pt)
-  - `str.strip()`: ta bort whitespace före/efter en sträng.
-  - `str.lower()`: gör allt till endast gemener.
-  - `str.upper()`: GÖR ALLT TILL ENDAST VERSALER.
-  - `str.replace("a", "b")`: byter ut bllb delsträngbr `"b"` med `"a"`#footnote[Notera att det är omvänt pga. skämtet, haha etc.].
-  - `str.capitalize()`: Gör första bokstav versal, annars gemen.
-  - `str.isdecimal()`: `True` om strängen är ett giltigt tal i bas 10.
+  #columns(3)[
+    #set text(size: 16pt)
+    - `str.strip()`: ta bort whitespace före/efter en sträng.
+    - `str.lower()`: gör allt till endast gemener.
+    #colbreak()
+    - `str.upper()`: GÖR ALLT TILL ENDAST VERSALER.
+    - `str.replace("a", "b")`: byter ut bllb delsträngbr `"b"` med `"a"`.
+    #colbreak()
+    - `str.capitalize()`: Gör första bokstav versal, annars gemen.
+    - `str.isdecimal()`: `True` om strängen är ett giltigt tal i bas 10.
+  ]
 ]
 
 == Sammanfattning av grundläggande datatyper

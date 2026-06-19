@@ -519,3 +519,47 @@ Har gemensam resistans:
 $
   1 / R_"tot" = 1 / R_1 + 1 / R_2 + dots.c + 1 / R_n quad <==> quad R_"tot" = (1 / R_1 + dots.c + 1 / R_n)^(-1) =( sum_(i = 1)^n 1 / R_i )^(-1)
 $
+
+== Reduktion till tvåpolsekvivalent
+
+Samtliga *resistiva* kretsar kan reduceras till en *spänningsekvivalent*:
+
+
+#align(center, zap.circuit({
+  import zap: *
+  draw.scale(1.5)
+  set-style(wire: (stroke: 1.5pt), node: (scale: (x: 1.5, y: 1.5)))
+  vsource("v1", (0, -2), (0, 2), variant: "ieee", label: $E$)
+  resistor("r1", "v1.out", (rel: (3, 0)), label: $R_"ekv"$)
+  node("plus", "r1.out", fill: false, label: (content: $+$, anchor: "south"))
+  wire("v1.in", (rel: (3, 0)), name: "w2")
+  node("minus", "w2.out", fill: false, label: (content: $-$, anchor: "north"))
+  draw.content((3, 0), $U_"ekv"$)
+}))
+
+= Ett stort reduktionsexempel
+
+== Ursprungskretsen
+
+#align(center, zap.circuit({
+  import zap: *
+  vsource("v1", (-6, 0), (6, 0), variant: "ieee", label: zi.V[230])
+  resistor("r1", "v1.out", (rel: (0, -5)), label: zi.ohm[320])
+  wire("r1.out", (rel: (-3, 0)), name: "w1")
+  node("n1", "w1.out")
+  wire("n1", (rel: (0, 2)), name: "w2")
+  resistor("r2", "w2.out", (rel: (-3, 0)), label: zi.ohm[1090])
+  resistor("r3", "r2.out", (rel: (-3, 0)), label: zi.ohm[420])
+  wire("n1", (rel: (0, -2)), name: "w3")
+  resistor("r4", "w3.out", (rel: (-3, 0)), label: (content: zi.ohm[5120], anchor: "south"))
+  lamp("l1", "r4.out", (rel: (-3, 0)))
+  wire("l1.out", (rel: (0, -.5)), name: "wb")
+  wire("l1.in", (rel: (0, -.5)), name: "wa")
+  node("b", "wb.out", label: (content: $B$, anchor: "south"))
+  node("a", "wa.out", label: (content: $A$, anchor: "south"))
+  wire("r3.out", (rel: (0, -2)))
+  wire("l1.out", (rel: (0, 2)), name: "w5")
+  node("n2", "w5.out")
+  resistor("r5", "n2", (rel: (-3, 0)), label: zi.ohm[330])
+  wire("r5.out", "v1.in")
+}))
