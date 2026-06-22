@@ -418,6 +418,57 @@
   }))
 ]
 
+== En tillämpning för spänningsdelaren
+#let pins = (
+  (content: "RESET", side: "west"),
+  (content: "3.3V", side: "west"),
+  (content: "3.3V", side: "west"),
+  (content: "GND", side: "west"),
+  (content: "A0", side: "west"),
+  (content: "A1", side: "west"),
+  (content: "A2", side: "west"),
+  (content: "A3", side: "west"),
+  (content: "D24", side: "west"),
+  (content: "D25", side: "west"),
+  (content: "SCK", side: "west"),
+  (content: "MOSI", side: "west"),
+  (content: "MISO", side: "west"),
+  (content: "RX", side: "west"),
+  (content: "TX", side: "west"),
+  (content: "D4", side: "west"),
+  (content: "VBAT", side: "east"),
+  (content: "EN", side: "east"),
+  (content: "VBUS", side: "east"),
+  (content: "D13", side: "east"),
+  (content: "D12", side: "east"),
+  (content: "D11", side: "east"),
+  (content: "D10", side: "east"),
+  (content: "D9", side: "east"),
+  (content: "D6", side: "east"),
+  (content: "D5", side: "east"),
+  (content: "SCL", side: "east"),
+  (content: "SDA", side: "east"),
+)
+
+#[
+  #set text(size: 16pt)
+  #align(center + horizon, zap.circuit({
+    import zap: *
+    draw.scale(1.4)
+
+    mcu("rp2040", (0, 0), pins: pins, label: "RP2040")
+    wire("rp2040.pin2", (rel: (-3, 0)), name: "w1")
+    resistor("r1", "w1.out", (rel: (0, -2)), label: (content: $R_1$, anchor: "south"), u: $U_1$)
+    wire("r1.out", (rel: (0, -1)), name: "w2")
+    swire("w2.center", (rel: (-2, -3)), name: "w3")
+    node("n1", "w2.center")
+    wire("w3.out", (rel: (3.5, 0)), name: "w4")
+    zwire("w4.out", "rp2040.pin6")
+    resistor("r2", "w2.out", (rel: (0, -2)), label: (content: $R_2$, anchor: "south"), u: $U_2$)
+    zwire("r2.out", "rp2040.pin4")
+  }))
+]
+
 == Lagen om strömförgrening
 
 #slide[
@@ -551,7 +602,7 @@ Samtliga *resistiva* kretsar kan reduceras till en *spänningsekvivalent*:
   resistor("r2", "w2.out", (rel: (-3, 0)), label: zi.ohm[1090])
   resistor("r3", "r2.out", (rel: (-3, 0)), label: zi.ohm[420])
   wire("n1", (rel: (0, -2)), name: "w3")
-  resistor("r4", "w3.out", (rel: (-3, 0)), label: (content: zi.ohm[5120], anchor: "south"))
+  resistor("r4", "w3.out", (rel: (-3, 0)), label: (content: zi.ohm[520], anchor: "south"))
   lamp("l1", "r4.out", (rel: (-3, 0)))
   wire("l1.out", (rel: (0, -.5)), name: "wb")
   wire("l1.in", (rel: (0, -.5)), name: "wa")
@@ -563,3 +614,196 @@ Samtliga *resistiva* kretsar kan reduceras till en *spänningsekvivalent*:
   resistor("r5", "n2", (rel: (-3, 0)), label: zi.ohm[330])
   wire("r5.out", "v1.in")
 }))
+
+#speaker-note([
+  - Vi klipper sen vid A och B!
+  - Rita ekvivalenten!
+])
+
+== Kretsen uppvikt
+
+
+#align(center, zap.circuit({
+  import zap: *
+
+  draw.scale(1.4)
+  vsource("v1", (-3, 0), (3, 0), variant: "ieee", label: zi.V[230])
+  resistor("r1", "v1.out", (rel: (0, -3)), label: zi.ohm[320])
+  resistor("r2", "r1.out", (rel: (-3, 0)), label: zi.ohm[1090])
+  resistor("r3", "r2.out", (rel: (-3, 0)), label: zi.ohm[420])
+  resistor("r4", "r1.out", (rel: (0, -3)), label: zi.ohm[520])
+  resistor("r5", "r3.out", (rel: (0, 3)), label: zi.ohm[320])
+  wire("r3.out", (rel: (0, -3)), name: "w1")
+  node("A", "r4.out", fill: false, label: (content: $A$, anchor: "south"))
+  node("B", "w1.out", fill: false, label: (content: $B$, anchor: "south"))
+}))
+#speaker-note([
+  - Beräkna polspänningen!
+  - *BLÄDDRA FÖR SERIE RESISTOR!!*
+])
+
+== Polspänningen
+#alternatives()[
+  #align(center, zap.circuit({
+    import zap: *
+
+    draw.scale(1.4)
+    vsource("v1", (-3, 0), (3, 0), variant: "ieee", label: zi.V[230])
+    resistor("r1", "v1.out", (rel: (0, -3)), label: zi.ohm[320], i: $I$)
+    resistor("r2", "r1.out", (rel: (-3, 0)), label: zi.ohm[1090])
+    resistor("r3", "r2.out", (rel: (-3, 0)), label: zi.ohm[420], i: (content: $I$, anchor: "south"))
+    resistor("r4", "r1.out", (rel: (0, -3)), label: zi.ohm[520], i: zi.ampere(0))
+    resistor("r5", "r3.out", (rel: (0, 3)), label: zi.ohm[320], i: $I$)
+    wire("r3.out", (rel: (0, -3)), name: "w1", i: zi.ampere(0))
+    node("A", "r4.out", fill: false, label: (content: $A$, anchor: "south"))
+    node("B", "w1.out", fill: false, label: (content: $B$, anchor: "south"))
+    draw.content("A", $+$, anchor: "east", padding: 15pt)
+    draw.content("B", $-$, anchor: "west", padding: 15pt)
+    draw.content((0, -6), $U_(A B)$)
+  }))
+][
+  #align(center, zap.circuit({
+    import zap: *
+
+    draw.scale(1.4)
+    vsource("v1", (-3, 0), (3, 0), variant: "ieee", label: zi.V[230])
+    resistor("r1", "v1.out", (rel: (0, -3)), label: zi.ohm[320], i: $I$)
+    resistor("r2", "r1.out", (rel: (-6, 0)), label: zi.ohm[1510], i: (content: $I$, anchor: "south"))
+    resistor("r4", "r1.out", (rel: (0, -3)), label: zi.ohm[520], i: zi.ampere(0))
+    resistor("r5", "r2.out", (rel: (0, 3)), label: zi.ohm[320], i: $I$)
+    wire("r2.out", (rel: (0, -3)), name: "w1", i: zi.ampere(0))
+    node("A", "r4.out", fill: false, label: (content: $A$, anchor: "south"))
+    node("B", "w1.out", fill: false, label: (content: $B$, anchor: "south"))
+    draw.content("A", $+$, anchor: "east", padding: 15pt)
+    draw.content("B", $-$, anchor: "west", padding: 15pt)
+    draw.content((0, -6), $U_(A B)$)
+  }))
+]
+
+#speaker-note[
+  - Beräkna kortslutningsström / polspänning på tavlan.
+  - Rita spänningsekvivalenten!
+
+  + Summa serieresistorerna till $R_2$
+
+  #set text(size: 16pt)
+  $
+    #grid(
+      columns: 3,
+      column-gutter: 25pt,
+      row-gutter: 25pt,
+      $U_"källa" = I_"öppen" (R_1 + R_2 + R_3) = zi.volt(230)$,
+      $I_"öppen" = U_"källa" / (R_1 + R_2 + R_3) approx zi.ampere(0.106)$,
+
+      $U_1 = R_1 I_"öppen" = zi.volt(33.92)$, $U_2 = R_2 I_"öppen" = zi.volt(160.06)$, $V_A = 230 - U_1 = 196.08$,
+      $V_B = V_A - U_2 = zi.volt(36.02)$, $U_(A B) = V_A - V_B = 196.08 - 36.02 = zi.volt(160.06)$,
+    )
+  $
+]
+
+== Kortslutningsströmmen
+
+#align(center, zap.circuit({
+  import zap: *
+
+  draw.scale(1.4)
+  vsource("v1", (-3, 0), (3, 0), variant: "ieee", label: zi.V[230])
+  resistor("r1", "v1.out", (rel: (0, -3)), label: zi.ohm[320], i: $I$)
+  resistor("r2", "r1.out", (rel: (-6, 0)), label: zi.ohm[1510], i: (content: zi.ampere(0), anchor: "south"))
+  resistor("r4", "r1.out", (rel: (0, -3)), label: zi.ohm[520])
+  resistor("r5", "r2.out", (rel: (0, 3)), label: zi.ohm[320], i: $I$)
+  wire("r2.out", (rel: (0, -3)), name: "w1")
+  node("A", "r4.out", fill: false, label: (content: $A$, anchor: "south"))
+  node("B", "w1.out", fill: false, label: (content: $B$, anchor: "south"))
+  wire("A", "B", i: $I_(A B)$)
+}))
+
+#speaker-note([
+  + Kortslutningsströmmen flödar $R_1,R_2,R_3$
+    - $R_4$ vid $A$.
+
+    #grid(
+      columns: 2,
+      column-gutter: 25pt,
+      row-gutter: 35pt,
+      $I_1 = I dot (R_2) / (R_1 + R_2) = I dot 0 / (0 + 1510) = 0$,
+      $I_2 = I dot R_1 / (R_1 + R_2) = I dot (1510) / 1510 = I$,
+
+      $I_(A B) = I, "enl. Kirchhoff I".$,
+    )
+
+    Resistorerna är i serie: $R = R_1 + R_4 + R_3 = zi.ohm(1162)$
+
+    $
+      U = R I_(A B) ==> zi.volt(230) / zi.ohm(1162) approx zi.ampere(0.198) = I_(A B)
+    $
+    som sen ger $E = R_"ekv" dot I_(A B) ==> R_"ekv" = E / I_(A B) = zi.volt(160.06) / zi.ampere(0.198) = zi.ohm(808.38)$
+])
+
+== Den ekvivalenta kretsen
+
+#align(center + horizon, zap.circuit({
+  import zap: *
+  draw.scale(1.5)
+  set-style(wire: (stroke: 1.5pt), node: (radius: .1), stroke: 1.5pt)
+  vsource("v1", (0, -3), (0, 3), variant: "ieee", label: zi.volt(230))
+  resistor("r1", "v1.out", (rel: (6, 0)), label: zi.ohm(808.38))
+  node("n1", "r1.out", label: (content: $A$, anchor: "east"))
+  lamp("l1", "r1.out", (rel: (0, -6)))
+  node("n2", "l1.out", label: (content: $B$, anchor: "east"))
+  wire("l1.out", "v1.in")
+}))
+
+= Rast! (15 min)
+
+= Signaler
+
+== Olika typer av signaler och sensorer
+
+- *Digitala* signaler är sådana som är _på_ eller _av_. Detta är ex.:
+  - Knappar (och alla strömbrytare)
+  - Pulsgivare
+  - *Integrerade kretsar*:
+    - GPS-moduler
+    - Accelerometrar
+    - m.m.
+#pause
+- *Analoga* signaler är kontinuerliga i ett *referensintervall*. Detta är ex.:
+  - Termistorer
+  - Fotoresistorer
+  - Potentiometrar
+  - m.m.
+
+= Att mäta signaler
+
+== Digital avläsning
+
+- Ett *högt* och ett *lågt* värde är definierat.
+#pause
+- Värden $>=$_hög_ är _på_.
+- Värden $<=$_låg_ är _av_.
+#pause
+- Det är alltså binärt, och man kan:
+  - Räkna pulser
+  - Tolka knappar och strömbrytare
+  - Kommunicera med digitala protokoll som I#super[2]C m.m.
+
+#speaker-note([
+  *Hög* resp. *låg* är ofta ett litet intervall!
+])
+
+== Analog avläsning
+
+- Egentligen en spänningsmätare.
+#pause
+- Värdet varierar inom *referensintervallet*.
+#pause
+- Spänningen kan ofta konverteras till en storhet.
+
+#line(length: 100%, stroke: au-blå + 2pt)
+Exempel:
+En termistor har egenskapen att
+$
+  R_"th" = f(T), quad f(T) = zi.ohm(100) + (degC(20) - T)
+$
+Innebär att resistansen ökar med #zi.ohm(20) för varje #degC(1) vilket vi kan mäta med en spänningsdelare!

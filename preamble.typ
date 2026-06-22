@@ -42,6 +42,7 @@
     )
 
     // pass style to entire scope: `cetz.draw.set-style(..style)`
+    zap.cetz.draw.set-style(..style)
     // or just a single item:
     // zap.cetz.draw.rect("bounds.north-east", "bounds.south-west", ..style)
     zap.cetz.draw.circle("bounds.west", anchor: "west", radius: const.w / 2, name: "c1")
@@ -63,6 +64,7 @@
 // #let volt = zi.declare("V")
 // #let amp = zi.declare("A")
 // #let ohm = zi.declare($Omega$)
+#let degC = zi.declare($degree"C"$)
 
 #let template(footer: [], handout: false, doc) = {
   show figure.caption: set text(size: 12pt, fill: luma(50%))
@@ -122,7 +124,6 @@
       [-- #it.attribution]
     }
   }
-
 
   show: simple-theme.with(
     aspect-ratio: "16-9",
