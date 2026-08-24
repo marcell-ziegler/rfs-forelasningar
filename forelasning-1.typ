@@ -1,5 +1,5 @@
 #import "preamble.typ": *
-#show: template.with(footer: [Grundläggande programmering (i Python)], handout: false)
+#show: template.with(footer: [Grundläggande programmering (i Python)], handout: true)
 
 #title-slide[
   = Programmering --- Föreläsning 1

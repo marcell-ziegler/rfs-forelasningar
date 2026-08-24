@@ -1,5 +1,5 @@
 #import "preamble.typ": *
-#show: template.with(footer: [Grundläggande elektroteknik, mikrokontroller & CircuitPython], handout: false)
+#show: template.with(footer: [Grundläggande elektroteknik, mikrokontroller & CircuitPython], handout: true)
 
 #title-slide[
   = Rymdteknik --- Föreläsning 1
@@ -807,3 +807,316 @@ $
   R_"th" = f(T), quad f(T) = zi.ohm(100) + (degC(20) - T)
 $
 Innebär att resistansen ökar med #zi.ohm(20) för varje #degC(1) vilket vi kan mäta med en spänningsdelare!
+
+== En RP2040:s signalavläsningsförmågor
+
+- Mäter både digitala och analoga med spänningsmätare.
+#pause
+- För digital gäller $<zi.volt(0.5)$ för _låg_ och $>=zi.volt(2)$ för _hög_.
+  - Det innebär att 0.5--#zi.volt(2) är tvetydigt!
+#pause
+- Analoga signaler mäts med en 12-bit *ADC*.
+  $
+      & 111111111111_"2" "för" zi.volt(3.3) quad "och" & quad & 000000000000_"2" "för" zi.volt(0). \
+    = & 4095_"10"                                      &    = & 0_"10"
+  $
+  #pause
+  - Detta ger en upplösning på
+    $
+      dif U = (U_"max" - U_"min") / (2^"antal bits" - 1) = zi.volt(3.3) / (2^12 - 1) approx zi.mV(0.806).
+    $
+
+#speaker-note([
+  - Nämnt att ADC:n gör om till ett heltalsvärde i referensintervallet!
+])
+
+= Att skicka signaler
+
+== Digital signalgivning
+
+- Man kopplar signalpinnen till:
+  - En spänningskälla med referensspänningen för _hög_.
+  - *Jord* för _låg_.
+#pause
+- Användbart för att styra apparater som antingen är på eller av.
+#pause
+- Med rätt mjukvara kan mer avancerade kommunikationsprotokoll som I#super[2]C användas.
+
+== Analog signalgivning
+- Man kan skicka sanna analoga signaler med en *DAC*, det har dock inte vi.
+#pause
+- Analoga signaler kan "imiteras" med *PWM* --- Pulse Width Modulation.
+#pause
+- En digital signal slås av och på väldigt snabbt.
+  - Upplevd spänning blir $U_"max" dot D$ där $D$ *Duty Cycle*.
+  - $D$ är andelen av tiden som signalen är på.
+
+#uncover("2-", align(center + bottom, image("assets/image-3.png", width: 79%)))
+
+= Rast! (15 min)
+
+= Att programmera en RP2040
+
+== RP2040:ns grundegenskaper
+
+- Vi programmerar den i *CircuitPython*, en "dialekt" av vanligt Python.
+  - CircuitPython är gjort för att vara kompakt och lätt att köra.
+#pause
+- Programmering görs via sladd från en dator.
+#pause
+- Programmet körs sedan för evigt tills du skriver över den.
+
+== Skillnader mellan CPython och CircuitPython
+- `match`-satsen finns inte.
+- `set` finns inte.
+- Många moduler har inte samma namn, eller existerar inte.
+
+== CircuitPythons moduler
+
+- Det finns vissa som ni sett innan:
+  - `math`
+  - `random`
+  - `time`
+#pause
+- Och många nya:
+  - `board`
+  - `digitalio`
+  - `analogio`
+  - `pwmio`
+
+== Vad är egentligen en pin?
+
+- Det är en digital eller analog signalmätare/-sändare på kretskortet.
+#pause
+- Dess funktion kan ställas in från koden ni skriver.
+#pause
+- Olika pins har olika förmågor:
+  - A0-A4 kan avläsa analoga signaler.
+  - Samtliga pinnar DX kan avläsa digitala signaler.
+  - Samtliga pinnar kan ge både digitala och PWM-signaler.
+  - Vissa pinnar kan utföra digital kommunikation över I#super[2]C m.m.
+
+
+== Mikrokontrollerns "Hello, World!"
+
+#slide(composer: (30%, auto))[
+  - Det är sedvanligt att blinka kortets LED som test.
+  - Detta verifierar att ni kan skicka kod och att denna körs utan fel.
+][
+  #set text(size: 20pt)
+  ```py
+  import board
+  import digitalio
+  import time
+
+  led = digitalio.DigitalInOut(board.LED)
+  led.direction = digitalio.Direction.OUTPUT
+
+  while True:
+    led.value = True
+    time.sleep(0.5)
+    led.value = False
+    time.sleep(0.5)
+  ```
+]
+
+#speaker-note([
+  + Importera nödvändiga bibliotek
+  + Skapa referens till pin
+  + Sätt riktning på pinnen
+  + Sätt på
+  + vänta
+  + Stäng av
+  + Repeat
+])
+
+= Digital IO
+
+== Att åtgärda tvetydiga signaler
+
+- Signalen bör hållas "ren" när den inte *drivs*.
+  - Att driva en pin innebär att man kopplar den till #zi.volt(3.3) eller jord.
+#pause
+- För detta används *pull-up* resp. *pull-down resistorer*.
+
+== Pull-up resistorer
+
+#slide(composer: (40%, auto))[
+  - Dessa "drar" signalen _högt_.
+    - Detta innebär att signalern läses som _på_ utan drift.
+    - Du driver en pull-up pin genom att koppla den till jord.
+][
+  #set text(size: 18pt)
+  #set align(center)
+
+  #zap.circuit({
+    import zap: *
+    draw.scale(1.2)
+    mcu("rp2040", (0, 0), pins: pins, label: "RP2040")
+    swire("rp2040.pin23", (3, 5), name: "w1")
+    wire("w1.out", (rel: (-6, 0)), name: "w2")
+    switch(
+      "s1",
+      "w2.out",
+      (rel: (-3, 0)),
+      label: (content: "Strömbrytare", anchor: "south", distance: 15pt),
+      scale: (y: -1),
+      closed: false,
+    )
+    swire("s1.out", "rp2040.pin4", axis: "y")
+    swire("rp2040.pin3", (rel: (-1, 0.5)), name: "w2")
+    resistor("r1", "w2.out", (rel: (0, 2.3)), label: "Pull-up")
+  })
+
+]
+
+== Pull-down resistorer
+
+#slide(composer: (40%, auto))[
+  - Dessa "drar" signalen _lågt_.
+    - Detta innebär att signalern läses som _av_ utan drift.
+    - Du driver en pull-up pin genom att koppla den till #zi.volt(3.3).
+][
+  #set text(size: 18pt)
+  #set align(center)
+
+
+  #zap.circuit({
+    import zap: *
+
+    draw.scale(1.2)
+    mcu("rp2040", (0, 0), pins: pins, label: "RP2040")
+    swire("rp2040.pin4", (rel: (-5, .2)), name: "w1")
+    resistor("r1", "w1.out", (rel: (0, 2.6)), label: "Pull-down")
+    wire("r1.out", (rel: (9, 0)), name: "w2")
+    swire("w2.out", "rp2040.pin23", axis: "y")
+    swire("rp2040.pin3", (rel: (-1, .2)), name: "w3")
+    switch("s1", "w3.out", (rel: (0, 2.2)), label: "Strömbrytare")
+  })
+]
+
+== Digital avläsning på RP2040
+#slide(composer: (40%, auto))[
+  - Vi läser signaler med `.value`.
+  - Vi måste också ställa pinnen till `INPUT`.
+][
+  #set text(size: 16pt)
+  ```py
+  import board
+  import digitalio
+
+  switch = digitalio.DigitalInOut(board.D10)
+  switch.switch_to_input(pull=digitalio.Pull.UP)
+
+  if switch.value:
+      print("HIGH")
+  else:
+      print("LOW")
+  ```
+]
+
+== Digital signalgivning på RP2040
+#slide(composer: (40%, auto))[
+  - Vi ger signaler genoma att tillsätta `.value`.
+  - Vi måste ställa pinnen till `OUTPUT`.
+  - Varken pull-up eller pull-down resistor krävs.
+][
+  #set text(size: 18pt)
+  ```py
+  import board
+  import digitalio
+  import time
+
+  led = digitalio.DigitalInOut(board.LED)
+  led.direction = digitalio.Direction.OUTPUT
+
+  while True:
+      led.value = True
+      time.sleep(0.5)
+      led.value = False
+      time.sleep(0.5)
+  ```
+]
+
+= Analog IO
+
+== Analog avläsning på RP2040
+
+#slide(composer: (44%, auto))[
+  - Vi skapar i `analogio.AnalogIn`-objekt.
+  - Vi läser deras `.value` som är mellan 0 och 65535.
+  - Vi kan gör om till spänning med
+    $
+      U = #[`pin.value`] dot zi.volt(3.3) / 65535.
+    $
+][
+  #set text(size: 14pt)
+  ```py
+  import board
+  import analogio
+  import time
+
+  pin_to_read = analogio.AnalogIn(board.A2)
+
+  def get_voltage(pin):
+      """Return the voltage at given analog pin in Volts."""
+      return pin.value * ( 3.3 / 65535 )
+
+  while True:
+      # Skriv ut returvärdet
+      print(get_voltage(pin_to_read))
+
+      # Vänta 1 sek
+      time.sleep(1)
+  ```
+]
+
+== Analog signalgivning på RP2040
+
+- Vi kan inte ge sanna analog värden, men vi kan ge PWM.
+#pause
+- `pwmio` används för detta.
+#pause
+- Vi skapar `pwmio.PWMOut`-objekt. Dessa har en:
+  - Pin
+  - Frekvens
+  - Duty Cycle
+#pause
+- Under programmet kan vi ställa både `frequency` och `duty_cycle`.
+
+---
+
+#columns(2)[
+  #set text(size: 20pt)
+  ```py
+  import time
+  import board
+  import pwmio
+
+  led = pwmio.PWMOut(board.LED, frequency=5000, duty_cycle=0)
+
+  while True:
+      led.duty_cycle = 0
+
+      for i in range(50):
+          led.duty_cycle = int((i / 50) * 65535)
+
+          time.sleep(10e-3)
+
+
+      for i in range(50):
+          led.duty_cycle = 65535 - int((i / 50) * 65535)
+
+          time.sleep(10e-3)
+  ```
+]
+
+== Att ge information via serieporten
+
+- Du kan printa och ta emot text över USB till en dator.
+- Du använder `print()` och `input()` för detta som vanligt.
+  Du skriver och läser i Serial Monitor i VSCode.
+
+== Att spara data under körning
+- Det går att skapa och läsa textfiler på din RP2040s minne.
+- Detta kommer på ett frivilligt seminarium under projekttiden!
